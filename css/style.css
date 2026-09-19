@@ -793,3 +793,435 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary);
 }
+
+/* =========================================================
+   ABOUT PAGE
+========================================================= */
+
+/* Page Hero */
+.page-hero {
+    min-height: 45vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.85)),
+        url("../assets/images/team.jpg") center/cover no-repeat;
+    padding: 120px 20px 70px;
+}
+
+.page-hero .container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    margin: 15px 0;
+    font-weight: 900;
+}
+
+.page-hero h1 span {
+    color: var(--primary);
+}
+
+.page-hero p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: #ccc;
+    line-height: 1.8;
+}
+
+
+/* About Introduction */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-image {
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.about-image img {
+    width: 100%;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.about-image:hover img {
+    transform: scale(1.04);
+}
+
+.about-content h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    margin: 15px 0 25px;
+}
+
+.about-content h2 span {
+    color: var(--primary);
+}
+
+.about-content p {
+    color: #bbb;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+
+/* Story Section */
+.story-section {
+    background: #0d0d0d;
+}
+
+.section-heading {
+    text-align: center;
+    max-width: 750px;
+    margin: 0 auto 50px;
+}
+
+.section-heading h2 {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    margin: 15px 0;
+}
+
+.section-heading h2 span {
+    color: var(--primary);
+}
+
+.section-heading p {
+    color: #aaa;
+    line-height: 1.7;
+}
+
+.story-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.story-card {
+    background: #151515;
+    padding: 35px;
+    border: 1px solid #222;
+    border-radius: 12px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.story-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+}
+
+.story-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 20px;
+}
+
+.story-card h3 {
+    margin-bottom: 15px;
+}
+
+.story-card p {
+    color: #aaa;
+    line-height: 1.7;
+}
+
+
+/* Values */
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.value-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-7px);
+    border-color: var(--primary);
+}
+
+.value-icon {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.value-card h3 {
+    margin-bottom: 12px;
+}
+
+.value-card p {
+    color: #aaa;
+    line-height: 1.7;
+}
+
+
+/* Mission & Vision */
+.mission-section {
+    background: #0d0d0d;
+}
+
+.mission-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.mission-card {
+    padding: 45px;
+    background: #151515;
+    border-left: 4px solid var(--primary);
+    border-radius: 10px;
+}
+
+.mission-card h2 {
+    font-size: 2rem;
+    margin: 18px 0;
+}
+
+.mission-card h2 span {
+    color: var(--primary);
+}
+
+.mission-card p {
+    color: #aaa;
+    line-height: 1.8;
+}
+
+
+/* =========================================================
+   TEAM PAGE
+========================================================= */
+
+.team-intro {
+    padding-bottom: 20px;
+}
+
+.players-section {
+    padding-top: 30px;
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+
+/* Player Card */
+.player-card {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.player-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+}
+
+
+/* Player Image */
+.player-image {
+    position: relative;
+    height: 330px;
+    background: #1a1a1a;
+    overflow: hidden;
+}
+
+.player-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.player-card:hover .player-image img {
+    transform: scale(1.05);
+}
+
+
+/* Position Badge */
+.player-position {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--primary);
+    color: #000;
+    font-size: 0.8rem;
+    font-weight: 900;
+    padding: 7px 10px;
+    border-radius: 5px;
+}
+
+
+/* Player Information */
+.player-info {
+    position: relative;
+    padding: 22px;
+}
+
+.player-number {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #292929;
+}
+
+.player-info h3 {
+    font-size: 1.15rem;
+    margin-bottom: 7px;
+    padding-right: 35px;
+}
+
+.player-info p {
+    color: var(--primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ABOUT + TEAM CTA
+========================================================= */
+
+.cta-section {
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)),
+        url("../assets/images/team.jpg") center/cover no-repeat;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1.05;
+    margin: 15px 0 25px;
+    font-weight: 900;
+}
+
+.cta-content h2 span {
+    color: var(--primary);
+}
+
+.cta-content p {
+    color: #bbb;
+    margin-bottom: 30px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   ABOUT + TEAM RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .story-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .page-hero {
+        min-height: 40vh;
+        padding: 110px 20px 60px;
+    }
+
+    .story-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mission-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mission-card {
+        padding: 30px;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .player-image {
+        height: 280px;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .players-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .player-image {
+        height: 350px;
+    }
+
+    .about-content h2 {
+        font-size: 2rem;
+    }
+
+    .mission-card h2 {
+        font-size: 1.6rem;
+    }
+
+    .cta-section {
+        padding: 75px 20px;
+    }
+
+       }
