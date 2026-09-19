@@ -1,1 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Login | Elite Ballers FC</title>
+
+    <meta
+        name="description"
+        content="Elite Ballers FC administration login."
+    >
+
+    <!-- Main website styles -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Admin styles -->
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body class="admin-login-page">
+
+    <!-- ==============================
+         LOGIN CONTAINER
+    =============================== -->
+
+    <main class="admin-login-container">
+
+        <div class="admin-login-card">
+
+            <!-- Logo -->
+            <a href="../index.html" class="admin-logo">
+                <span>ELITE</span> BALLERS FC
+            </a>
+
+
+            <!-- Heading -->
+            <div class="admin-login-heading">
+
+                <span class="section-tag">
+                    ADMINISTRATION
+                </span>
+
+                <h1>
+                    Welcome <span>Back</span>
+                </h1>
+
+                <p>
+                    Sign in to manage the Elite Ballers FC website.
+                </p>
+
+            </div>
+
+
+            <!-- Login Form -->
+            <form
+                class="admin-login-form"
+                id="adminLoginForm"
+            >
+
+                <!-- Username -->
+                <div class="admin-form-group">
+
+                    <label for="adminUsername">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="adminUsername"
+                        name="username"
+                        placeholder="Enter admin username"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Password -->
+                <div class="admin-form-group">
+
+                    <label for="adminPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="adminPassword"
+                            name="password"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="passwordToggle"
+                            aria-label="Show password"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Remember me -->
+                <div class="admin-login-options">
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+                    <a href="#" class="forgot-password">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- Error / success message -->
+                <div
+                    class="login-message"
+                    id="loginMessage"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- Login button -->
+                <button
+                    type="submit"
+                    class="admin-login-button"
+                >
+                    <span>LOGIN TO DASHBOARD</span>
+                    <span class="login-arrow">→</span>
+                </button>
+
+            </form>
+
+
+            <!-- Back to website -->
+            <a
+                href="../index.html"
+                class="back-to-site"
+            >
+                ← Back to Elite Ballers FC
+            </a>
+
+
+            <!-- Security note -->
+            <div class="admin-security-note">
+
+                <span>🔒</span>
+
+                <p>
+                    Admin access is restricted to authorized
+                    Elite Ballers FC administrators.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- ==============================
+         LOGIN SCRIPT
+    =============================== -->
+
+    <script>
+
+        const loginForm =
+            document.getElementById("adminLoginForm");
+
+        const passwordInput =
+            document.getElementById("adminPassword");
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const loginMessage =
+            document.getElementById("loginMessage");
+
+
+        /* ============================
+           SHOW / HIDE PASSWORD
+        ============================ */
+
+        passwordToggle.addEventListener("click", function () {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                passwordToggle.textContent = "🙈";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Hide password"
+                );
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordToggle.textContent = "👁";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Show password"
+                );
+
+            }
+
+        });
+
+
+        /* ============================
+           LOGIN
+        ============================ */
+
+        loginForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+
+            const username =
+                document.getElementById("adminUsername")
+                .value
+                .trim();
+
+            const password =
+                passwordInput.value;
+
+
+            loginMessage.className =
+                "login-message";
+
+
+            /*
+             * DEMO LOGIN
+             *
+             * This is NOT secure authentication.
+             *
+             * We will replace this with a proper
+             * authentication system later.
+             */
+
+            const demoUsername = "admin";
+            const demoPassword = "elite123";
+
+
+            if (
+                username === demoUsername &&
+                password === demoPassword
+            ) {
+
+                loginMessage.textContent =
+                    "Login successful. Opening dashboard...";
+
+                loginMessage.classList.add("success");
+
+
+                /*
+                 * Small delay so the user can see
+                 * the success message.
+                 */
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                }, 700);
+
+
+            } else {
+
+                loginMessage.textContent =
+                    "Invalid username or password.";
+
+                loginMessage.classList.add("error");
+
+            }
+
+        });
+
+
+        /* ============================
+           FORGOT PASSWORD
+        ============================ */
+
+        const forgotPassword =
+            document.querySelector(".forgot-password");
+
+
+        forgotPassword.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+            loginMessage.className =
+                "login-message info";
+
+            loginMessage.textContent =
+                "Password recovery will be connected later.";
+
+        });
+
+    </script>
+
+</body>
+  </html>
