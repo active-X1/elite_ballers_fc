@@ -557,14 +557,17 @@
 
 .admin-sidebar {
     width: 290px;
-    background: rgba(10, 14, 18, 0.96);
+    background: rgba(10, 14, 18, 0.98);
     border-right: 1px solid var(--border);
     padding: 26px 20px 16px;
     display: flex;
     flex-direction: column;
-    position: sticky;
+    position: fixed;
+    left: 0;
     top: 0;
     height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     backdrop-filter: blur(14px);
 }
 
@@ -665,6 +668,47 @@
 .admin-main {
     flex: 1;
     padding: 26px 28px 42px;
+    margin-left: 290px;
+}
+
+/* Top icon menu — compact section shortcuts under the topbar */
+.admin-top-icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 4px 18px;
+    overflow-x: auto;
+}
+
+.admin-top-icons a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.admin-top-icons a .icon {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(212,255,0,0.08);
+    color: var(--primary);
+}
+
+.admin-top-icons a.active {
+    background: linear-gradient(135deg, rgba(212,255,0,0.12), rgba(255,255,255,0.02));
+    color: var(--primary);
+    border-color: rgba(212,255,0,0.12);
 }
 
 .admin-topbar {
