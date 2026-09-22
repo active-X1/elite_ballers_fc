@@ -117,6 +117,8 @@
 
             </div>
 
+            <div class="fixtures-list"></div>
+
 
             <!-- FIXTURE 1 -->
             <article class="fixture-card">
@@ -446,6 +448,16 @@
 
 
     <script src="js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+        <script src="/js/supabase.js"></script>
+        <script src="/js/sb-renderers.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                try{
+                    if(window.SBRenderers) window.SBRenderers.renderFixtures('.fixtures-list', 12);
+                }catch(e){console.error(e)}
+            });
+        </script>
 
 </body>
   </html>
