@@ -615,6 +615,14 @@
 
 
     <script src="js/main.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+        <script src="/js/supabase.js"></script>
+        <script src="/js/sb-renderers.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                try{ if(window.SBRenderers) window.SBRenderers.renderGallery('.gallery-grid', 24); }catch(e){console.error(e)}
+            });
+        </script>
 
 </body>
       </html>
