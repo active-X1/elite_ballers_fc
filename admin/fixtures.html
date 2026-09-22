@@ -1,3 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Fixtures | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div>
+      <nav class="admin-nav">
+        <span class="admin-nav-title">MAIN MENU</span>
+        <a href="dashboard.html" class="admin-nav-link">▣ Dashboard</a>
+        <a href="players.html" class="admin-nav-link">♟ Players</a>
+        <a href="fixtures.html" class="admin-nav-link active">📅 Fixtures</a>
+      </nav>
+      <div class="admin-sidebar-bottom"><a href="../index.html" class="view-site-link">↗ View Website</a><button class="admin-logout" id="logoutButton">⇥ Logout</button></div>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><button class="admin-menu-button" id="adminMenuButton">☰</button><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Fixtures</h1></div><div class="admin-user"><div class="admin-user-avatar">A</div></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">FIXTURES</span><h3>Manage Fixtures</h3></div><a href="#" id="refreshFixtures">Refresh</a></div>
+          <form id="fixtureForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <input id="fixtureDate" placeholder="Date (YYYY-MM-DD)" required>
+            <input id="fixtureTime" placeholder="Time (e.g. 16:00)" required>
+            <input id="fixtureOpponent" placeholder="Opponent" required>
+            <input id="fixtureLocation" placeholder="Location">
+            <button class="btn btn-primary" type="submit">Add Fixture</button>
+          </form>
+          <div id="fixturesList" style="margin-top:18px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+    const fixturesList = document.getElementById('fixturesList');
+    const fixtureForm = document.getElementById('fixtureForm');
+
+    async function renderFixtures(items) {
+      fixturesList.innerHTML = items.map(f => `<div style="padding:10px;border-bottom:1px solid var(--border)"><strong>${f.date} ${f.time}</strong> — ${f.opponent} <span style="color:var(--text-muted)">@ ${f.location || 'TBD'}</span> <button data-id="${f.id}" data-action="delete">Delete</button></div>`).join('');
+      fixturesList.querySelectorAll('button[data-action]').forEach(b => b.addEventListener('click', async () => { if (!confirm('Delete fixture?')) return; await AdminCRUD.deleteItem('fixtures', b.dataset.id); loadFixtures(); }));
+    }
+
+    async function loadFixtures() { await AdminCRUD.loadList('fixtures', renderFixtures); }
+
+    fixtureForm.addEventListener('submit', async (e) => { e.preventDefault(); const date=document.getElementById('fixtureDate').value.trim(); const time=document.getElementById('fixtureTime').value.trim(); const opponent=document.getElementById('fixtureOpponent').value.trim(); const location=document.getElementById('fixtureLocation').value.trim(); await AdminCRUD.addItem('fixtures', { date, time, opponent, location }); fixtureForm.reset(); loadFixtures(); });
+
+    document.getElementById('refreshFixtures').addEventListener('click', (e)=>{e.preventDefault();loadFixtures();});
+    loadFixtures();
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>

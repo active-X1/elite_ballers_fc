@@ -1,3 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — News | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>News</h1></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">NEWS</span><h3>Publish News</h3></div></div>
+          <form id="newsForm" style="display:flex;flex-direction:column;gap:8px;">
+            <input id="newsTitle" placeholder="Title" required>
+            <textarea id="newsBody" placeholder="Short body" rows="4"></textarea>
+            <input id="newsImage" placeholder="Image URL (optional)">
+            <button class="btn btn-primary" type="submit">Publish</button>
+          </form>
+          <div id="newsList" style="margin-top:18px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+    const newsList=document.getElementById('newsList');
+    const newsForm=document.getElementById('newsForm');
+    async function renderNews(items){ newsList.innerHTML = items.map(n=>`<article style="padding:12px;border-bottom:1px solid var(--border)"><h4>${n.title}</h4><p style="color:var(--text-muted)">${n.body}</p><div style="display:flex;gap:8px"><small>${n.created_at||''}</small><button data-id="${n.id}" data-action="delete">Delete</button></div></article>`).join(''); newsList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',async()=>{ if(!confirm('Delete news?'))return; await AdminCRUD.deleteItem('news', b.dataset.id); loadNews(); })); }
+    async function loadNews(){ await AdminCRUD.loadList('news', renderNews); }
+    newsForm.addEventListener('submit', async e=>{ e.preventDefault(); const title=document.getElementById('newsTitle').value.trim(); const body=document.getElementById('newsBody').value.trim(); const image=document.getElementById('newsImage').value.trim(); await AdminCRUD.addItem('news', { title, body, image }); newsForm.reset(); loadNews(); });
+    loadNews();
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>

@@ -1,3 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Settings | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Settings</h1></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">SETTINGS</span><h3>Account Settings</h3></div></div>
+          <form id="passwordForm" style="display:flex;flex-direction:column;gap:8px;max-width:420px;">
+            <input id="currentPassword" type="password" placeholder="Current Password (for reauth)" required>
+            <input id="newPassword" type="password" placeholder="New Password" required>
+            <button class="btn btn-primary" type="submit">Change Password</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script>
+    document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const current = document.getElementById('currentPassword').value.trim();
+      const next = document.getElementById('newPassword').value.trim();
+      if (!window.SB || !window.SB.client) return alert('Supabase not loaded');
+      try {
+        // Attempt a re-auth by signing in again (demo flow). In production use secure flows.
+        const user = window.SB.getUser();
+        if (!user) return alert('Not signed in');
+        const { error } = await window.SB.client.auth.update({ password: next });
+        if (error) return alert('Error: ' + error.message);
+        alert('Password updated');
+      } catch (err) {
+        console.error(err);
+        alert('Update failed');
+      }
+    });
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>

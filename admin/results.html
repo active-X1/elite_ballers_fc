@@ -1,3 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Results | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Results</h1></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">RESULTS</span><h3>Record Results</h3></div></div>
+          <form id="resultForm" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input id="resultDate" placeholder="Date" required>
+            <input id="resultOpponent" placeholder="Opponent" required>
+            <input id="resultFor" placeholder="Our Goals" required>
+            <input id="resultAgainst" placeholder="Their Goals" required>
+            <button class="btn btn-primary" type="submit">Save Result</button>
+          </form>
+          <div id="resultsList" style="margin-top:18px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+    const resultsList=document.getElementById('resultsList');
+    const resultForm=document.getElementById('resultForm');
+    async function renderResults(items){ resultsList.innerHTML=items.map(r=>`<div style="padding:10px;border-bottom:1px solid var(--border)"><strong>${r.date}</strong> — ${r.opponent} <span style="color:var(--text-muted)">${r.for_goals}–${r.against_goals}</span> <button data-id="${r.id}" data-action="delete">Delete</button></div>`).join(''); resultsList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',async()=>{ if(!confirm('Delete result?'))return; await AdminCRUD.deleteItem('results', b.dataset.id); loadResults(); })); }
+    async function loadResults(){ await AdminCRUD.loadList('results', renderResults); }
+    resultForm.addEventListener('submit', async e=>{ e.preventDefault(); const date=document.getElementById('resultDate').value.trim(); const opponent=document.getElementById('resultOpponent').value.trim(); const for_goals=document.getElementById('resultFor').value.trim(); const against_goals=document.getElementById('resultAgainst').value.trim(); await AdminCRUD.addItem('results', { date, opponent, for_goals, against_goals }); resultForm.reset(); loadResults(); });
+    loadResults();
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>

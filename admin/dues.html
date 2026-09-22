@@ -1,3 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Dues | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Dues</h1></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">DUES</span><h3>Track Payments</h3></div></div>
+          <form id="duesForm" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <input id="payerName" placeholder="Member name" required>
+            <input id="amount" placeholder="Amount" required>
+            <input id="week" placeholder="Week (e.g. 2026-W37)" required>
+            <button class="btn btn-primary" type="submit">Add Payment</button>
+          </form>
+          <div style="margin-top:12px;display:flex;gap:8px;"><button id="exportCsv" class="btn">Download CSV</button><button id="refreshDues" class="btn">Refresh</button></div>
+          <div id="duesList" style="margin-top:18px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+    const duesList=document.getElementById('duesList');
+    const duesForm=document.getElementById('duesForm');
+    async function renderDues(items){ duesList.innerHTML = items.map(d=>`<div style="padding:10px;border-bottom:1px solid var(--border)"><input type="checkbox" data-id="${d.id}" ${d.paid? 'checked': ''}> <strong>${d.payer}</strong> — ${d.amount} <small style="color:var(--text-muted)">(${d.week})</small> <button data-id="${d.id}" data-action="delete">Delete</button></div>`).join('');
+      duesList.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change', async ()=>{ const id=cb.dataset.id; await AdminCRUD.updateItem('dues', id, { paid: cb.checked }); }));
+      duesList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click', async ()=>{ if(!confirm('Delete payment?')) return; await AdminCRUD.deleteItem('dues', b.dataset.id); loadDues(); })); }
+    async function loadDues(){ await AdminCRUD.loadList('dues', renderDues); }
+    duesForm.addEventListener('submit', async e=>{ e.preventDefault(); const payer=document.getElementById('payerName').value.trim(); const amount=document.getElementById('amount').value.trim(); const week=document.getElementById('week').value.trim(); await AdminCRUD.addItem('dues', { payer, amount, week, paid: false }); duesForm.reset(); loadDues(); });
+    document.getElementById('exportCsv').addEventListener('click', async ()=>{ const rows = await AdminCRUD.loadList('dues', (d)=>{}); if(rows) AdminCRUD.csvDownload('dues.csv', rows); });
+    document.getElementById('refreshDues').addEventListener('click', (e)=>{ e.preventDefault(); loadDues(); });
+    loadDues();
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>

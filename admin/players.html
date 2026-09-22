@@ -2,6 +2,143 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Players | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+
+  <!-- Sidebar + layout copied from dashboard for consistency -->
+  <!-- Minimal: link back to main dashboard -->
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="admin-sidebar-header">
+        <a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a>
+      </div>
+      <nav class="admin-nav">
+        <span class="admin-nav-title">MAIN MENU</span>
+        <a href="dashboard.html" class="admin-nav-link">▣ Dashboard</a>
+        <a href="players.html" class="admin-nav-link active">♟ Players</a>
+        <a href="fixtures.html" class="admin-nav-link">📅 Fixtures</a>
+        <a href="results.html" class="admin-nav-link">🏆 Results</a>
+        <span class="admin-nav-title">CONTENT</span>
+        <a href="gallery.html" class="admin-nav-link">▧ Gallery</a>
+        <a href="news.html" class="admin-nav-link">◈ News</a>
+        <span class="admin-nav-title">TEAM</span>
+        <a href="dues.html" class="admin-nav-link">₦ Dues</a>
+        <a href="settings.html" class="admin-nav-link">⚙ Settings</a>
+      </nav>
+      <div class="admin-sidebar-bottom">
+        <a href="../index.html" class="view-site-link">↗ View Website</a>
+        <button class="admin-logout" id="logoutButton">⇥ Logout</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <button class="admin-menu-button" id="adminMenuButton" aria-label="Open admin menu">☰</button>
+        <div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Players</h1></div>
+        <div class="admin-user"><div class="admin-user-avatar">A</div><div class="admin-user-info"><strong>Admin</strong><span>Club Admin</span></div></div>
+      </header>
+
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header">
+            <div>
+              <span class="admin-panel-label">PLAYERS</span>
+              <h3>Manage Players</h3>
+            </div>
+            <a href="#" id="refreshPlayers">Refresh</a>
+          </div>
+
+          <div>
+            <form id="playerForm">
+              <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                <input placeholder="Name" id="playerName" required>
+                <input placeholder="Number" id="playerNumber" required>
+                <input placeholder="Position" id="playerPosition">
+                <input placeholder="Image URL" id="playerImage">
+                <button class="btn btn-primary" type="submit">Add Player</button>
+              </div>
+            </form>
+          </div>
+
+          <div style="margin-top:18px;">
+            <div id="playersList"></div>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+
+    const playersList = document.getElementById('playersList');
+    const playerForm = document.getElementById('playerForm');
+
+    async function renderPlayers(items) {
+      playersList.innerHTML = items.map(p => `
+        <div class="player-card" style="display:flex;align-items:center;gap:12px;padding:10px;margin-bottom:8px;">
+          <div style="width:72px;height:72px;border-radius:8px;overflow:hidden;background:#111;display:flex;align-items:center;justify-content:center">${p.image ? `<img src="${p.image}" style="width:100%;height:100%;object-fit:cover">` : p.name.charAt(0)}</div>
+          <div style="flex:1"><strong>${p.name}</strong><div style="color:var(--text-muted)">#${p.number} • ${p.position || '—'}</div></div>
+          <div style="display:flex;gap:8px"><button class="btn" data-id="${p.id}" data-action="edit">Edit</button><button class="btn" data-id="${p.id}" data-action="delete">Delete</button></div>
+        </div>
+      `).join('');
+
+      // attach handlers
+      playersList.querySelectorAll('button[data-action]').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          const id = btn.getAttribute('data-id');
+          const action = btn.getAttribute('data-action');
+          if (action === 'delete') {
+            if (!confirm('Delete this player?')) return;
+            await AdminCRUD.deleteItem('players', id);
+            loadPlayers();
+          }
+          if (action === 'edit') {
+            const name = prompt('New name', '');
+            if (!name) return;
+            await AdminCRUD.updateItem('players', id, { name });
+            loadPlayers();
+          }
+        });
+      });
+    }
+
+    async function loadPlayers() {
+      await AdminCRUD.loadList('players', renderPlayers);
+    }
+
+    playerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('playerName').value.trim();
+      const number = document.getElementById('playerNumber').value.trim();
+      const position = document.getElementById('playerPosition').value.trim();
+      const image = document.getElementById('playerImage').value.trim();
+      await AdminCRUD.addItem('players', { name, number, position, image });
+      playerForm.reset();
+      loadPlayers();
+    });
+
+    document.getElementById('refreshPlayers').addEventListener('click', (e) => { e.preventDefault(); loadPlayers(); });
+
+    // initial load
+    loadPlayers();
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Players | Admin</title>
   <link rel="stylesheet" href="../css/style.css">

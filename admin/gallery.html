@@ -1,3 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin — Gallery | Elite Ballers FC</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Gallery</h1></div></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">GALLERY</span><h3>Manage Gallery</h3></div></div>
+          <form id="galleryForm" style="display:flex;gap:8px;align-items:center;">
+            <input id="galleryTitle" placeholder="Title" required>
+            <input id="galleryImage" placeholder="Image URL" required>
+            <button class="btn btn-primary" type="submit">Add Image</button>
+          </form>
+          <div id="galleryList" style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script src="/js/supabase.js"></script>
+  <script src="/js/admin.js"></script>
+  <script type="module">
+    import AdminCRUD from '/js/admin-crud.js';
+    const galleryList=document.getElementById('galleryList');
+    const galleryForm=document.getElementById('galleryForm');
+    async function renderGallery(items){ galleryList.innerHTML=items.map(i=>`<div style="background:#0b0b0b;border:1px solid var(--border);padding:8px;border-radius:10px"><img src="${i.image}" style="width:100%;height:120px;object-fit:cover;border-radius:6px"><div style="padding-top:8px"><strong>${i.title||''}</strong><div style="display:flex;justify-content:space-between;margin-top:8px"><small style="color:var(--text-muted)">${i.created_at||''}</small><button data-id="${i.id}" data-action="delete">Delete</button></div></div></div>`).join(''); galleryList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',async()=>{ if(!confirm('Delete image?'))return; await AdminCRUD.deleteItem('gallery', b.dataset.id); loadGallery(); })); }
+    async function loadGallery(){ await AdminCRUD.loadList('gallery', renderGallery); }
+    galleryForm.addEventListener('submit', async e=>{ e.preventDefault(); const title=document.getElementById('galleryTitle').value.trim(); const image=document.getElementById('galleryImage').value.trim(); await AdminCRUD.addItem('gallery', { title, image }); galleryForm.reset(); loadGallery(); });
+    loadGallery();
+  </script>
+</body>
+</html>
 <!doctype html>
 <html>
 <head>
