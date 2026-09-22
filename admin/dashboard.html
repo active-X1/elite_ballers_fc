@@ -51,796 +51,135 @@
                 >
                     <span>ELITE</span>
                     BALLERS FC
-                </a>
+                <!DOCTYPE html>
+                <html lang="en">
 
-            </div>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Dashboard | Elite Ballers FC Admin</title>
+                    <meta name="description" content="Elite Ballers FC administration dashboard.">
+                    <link rel="stylesheet" href="../css/style.css">
+                    <link rel="stylesheet" href="../css/admin.css">
+                </head>
 
+                <body class="admin-page">
 
-            <!-- Navigation -->
+                    <div class="admin-layout">
 
-            <nav class="admin-nav">
+                        <aside class="admin-sidebar" id="adminSidebar">
+                            <div class="admin-sidebar-header">
+                                <a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a>
+                            </div>
 
+                            <nav class="admin-nav">
+                                <span class="admin-nav-title">MAIN MENU</span>
+                                <a href="dashboard.html" class="admin-nav-link active"><span class="admin-nav-icon">▣</span><span>Dashboard</span></a>
+                                <a href="players.html" class="admin-nav-link"><span class="admin-nav-icon">♟</span><span>Players</span></a>
+                                <a href="fixtures.html" class="admin-nav-link"><span class="admin-nav-icon">📅</span><span>Fixtures</span></a>
+                                <a href="results.html" class="admin-nav-link"><span class="admin-nav-icon">🏆</span><span>Results</span></a>
 
-                <span class="admin-nav-title">
-                    MAIN MENU
-                </span>
+                                <span class="admin-nav-title">CONTENT</span>
+                                <a href="gallery.html" class="admin-nav-link"><span class="admin-nav-icon">▧</span><span>Gallery</span></a>
+                                <a href="news.html" class="admin-nav-link"><span class="admin-nav-icon">◈</span><span>News</span></a>
 
+                                <span class="admin-nav-title">TEAM MANAGEMENT</span>
+                                <a href="dues.html" class="admin-nav-link"><span class="admin-nav-icon">₦</span><span>Team Dues</span></a>
+                                <a href="settings.html" class="admin-nav-link"><span class="admin-nav-icon">⚙</span><span>Settings</span></a>
+                            </nav>
 
-                <a
-                    href="dashboard.html"
-                    class="admin-nav-link active"
-                >
+                            <div class="admin-sidebar-bottom">
+                                <a href="../index.html" class="view-site-link"><span>↗</span> View Website</a>
+                                <button class="admin-logout" id="logoutButton"><span>⇥</span> Logout</button>
+                            </div>
+                        </aside>
 
-                    <span class="admin-nav-icon">
-                        ▣
-                    </span>
+                        <main class="admin-main">
+                            <header class="admin-topbar">
+                                <button class="admin-menu-button" id="adminMenuButton" aria-label="Open admin menu">☰</button>
+                                <div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Dashboard</h1></div>
+                                <div class="admin-user"><div class="admin-user-avatar">A</div><div class="admin-user-info"><strong>Administrator</strong><span>Club Admin</span></div></div>
+                            </header>
 
-                    <span>
-                        Dashboard
-                    </span>
+                            <section class="admin-content">
+                                <div class="admin-welcome">
+                                    <div>
+                                        <span class="section-tag">ELITE BALLERS FC</span>
+                                        <h2>Welcome back, <span>Admin.</span></h2>
+                                        <p>Manage your club, players, matches, news and team finances from one place.</p>
+                                    </div>
+                                </div>
 
-                </a>
+                                <div class="admin-stats-grid">
+                                    <div class="admin-stat-card"><div class="admin-stat-icon">♟</div><div><span>TOTAL PLAYERS</span><strong id="statPlayers">—</strong><small>Active team members</small></div></div>
+                                    <div class="admin-stat-card"><div class="admin-stat-icon">📅</div><div><span>UPCOMING FIXTURES</span><strong id="statFixtures">—</strong><small>Matches scheduled</small></div></div>
+                                    <div class="admin-stat-card"><div class="admin-stat-icon">🏆</div><div><span>MATCHES PLAYED</span><strong id="statMatches">—</strong><small>Wins · Draws · Losses</small></div></div>
+                                    <div class="admin-stat-card"><div class="admin-stat-icon">₦</div><div><span>WEEKLY DUES</span><strong id="statDues">—</strong><small>Per team member</small></div></div>
+                                </div>
 
+                                <div class="admin-dashboard-grid">
+                                    <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">NEXT MATCH</span><h3>Upcoming Fixture</h3></div><a href="fixtures.html">Manage</a></div><div class="next-match-card" id="nextMatchCard"><p>Loading...</p></div></div>
+                                    <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">RECENT MATCH</span><h3>Latest Result</h3></div><a href="results.html">Manage</a></div><div class="latest-result-card" id="latestResultCard"><p>Loading...</p></div></div>
+                                </div>
 
-                <a
-                    href="players.html"
-                    class="admin-nav-link"
-                >
+                                <div class="admin-panel quick-actions-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">SHORTCUTS</span><h3>Quick Actions</h3></div></div><div class="quick-actions-grid"><a href="players.html" class="quick-action"><span>♟</span><div><strong>Add Player</strong><small>Register a new team member</small></div><b>→</b></a><a href="fixtures.html" class="quick-action"><span>📅</span><div><strong>Add Fixture</strong><small>Schedule a match</small></div><b>→</b></a><a href="results.html" class="quick-action"><span>🏆</span><div><strong>Add Result</strong><small>Record a match result</small></div><b>→</b></a><a href="news.html" class="quick-action"><span>◈</span><div><strong>Publish News</strong><small>Create a club update</small></div><b>→</b></a></div></div>
 
-                    <span class="admin-nav-icon">
-                        ♟
-                    </span>
+                                <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">ACTIVITY</span><h3>Recent Activity</h3></div></div><div class="activity-list" id="activityList"><p>Loading...</p></div></div>
 
-                    <span>
-                        Players
-                    </span>
+                            </section>
+                        </main>
 
-                </a>
+                    </div>
 
+                    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+                    <script src="../js/supabase.js"></script>
+                    <script src="../js/admin.js"></script>
 
-                <a
-                    href="fixtures.html"
-                    class="admin-nav-link"
-                >
+                    <script>
+                        // Load simple dashboard data from Supabase (best-effort, no errors thrown)
+                        (async function () {
+                            try {
+                                if (!window.SB) return;
+                                const [players, fixtures, results, dues, news] = await Promise.all([
+                                    window.SB.fetchAll('players'),
+                                    window.SB.fetchAll('fixtures'),
+                                    window.SB.fetchAll('results'),
+                                    window.SB.fetchAll('dues'),
+                                    window.SB.fetchAll('news')
+                                ]);
 
-                    <span class="admin-nav-icon">
-                        📅
-                    </span>
+                                document.getElementById('statPlayers').textContent = (players.data || []).length || '0';
+                                document.getElementById('statFixtures').textContent = (fixtures.data || []).length || '0';
+                                document.getElementById('statMatches').textContent = (results.data || []).length || '0';
+                                document.getElementById('statDues').textContent = (dues.data && dues.data[0] && dues.data[0].amount) ? dues.data[0].amount : '—';
 
-                    <span>
-                        Fixtures
-                    </span>
+                                const next = (fixtures.data || [])[0];
+                                const latest = (results.data || [])[0];
 
-                </a>
+                                const nextMatchCard = document.getElementById('nextMatchCard');
+                                if (next) nextMatchCard.innerHTML = `<div><strong>${next.date || ''}</strong><p>${next.home || 'Elite Ballers FC'} vs ${next.away || 'Opponent'}</p></div>`;
+                                else nextMatchCard.innerHTML = '<p>No upcoming match</p>';
 
+                                const latestResultCard = document.getElementById('latestResultCard');
+                                if (latest) latestResultCard.innerHTML = `<div><strong>${latest.home_score} - ${latest.away_score}</strong><p>${latest.home} vs ${latest.away}</p></div>`;
+                                else latestResultCard.innerHTML = '<p>No recent results</p>';
 
-                <a
-                    href="results.html"
-                    class="admin-nav-link"
-                >
+                                const activityList = document.getElementById('activityList');
+                                activityList.innerHTML = '';
+                                (news.data || []).slice(0,6).forEach(n => {
+                                    const item = document.createElement('div');
+                                    item.className = 'activity-item';
+                                    item.innerHTML = `<div class="activity-icon">◈</div><div><strong>${n.title}</strong><p>${n.excerpt||''}</p></div><span>${new Date(n.created_at).toLocaleDateString()}</span>`;
+                                    activityList.appendChild(item);
+                                });
 
-                    <span class="admin-nav-icon">
-                        🏆
-                    </span>
+                            } catch (e) {
+                                console.warn('Dashboard load error', e);
+                            }
+                        })();
+                    </script>
 
-                    <span>
-                        Results
-                    </span>
+                </body>
 
-                </a>
-
-
-                <span class="admin-nav-title">
-                    CONTENT
-                </span>
-
-
-                <a
-                    href="gallery.html"
-                    class="admin-nav-link"
-                >
-
-                    <span class="admin-nav-icon">
-                        ▧
-                    </span>
-
-                    <span>
-                        Gallery
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="news.html"
-                    class="admin-nav-link"
-                >
-
-                    <span class="admin-nav-icon">
-                        ◈
-                    </span>
-
-                    <span>
-                        News
-                    </span>
-
-                </a>
-
-
-                <span class="admin-nav-title">
-                    TEAM MANAGEMENT
-                </span>
-
-
-                <a
-                    href="dues.html"
-                    class="admin-nav-link"
-                >
-
-                    <span class="admin-nav-icon">
-                        ₦
-                    </span>
-
-                    <span>
+                </html>
                         Team Dues
-                    </span>
-
-                </a>
-
-
-                <a
-                    href="settings.html"
-                    class="admin-nav-link"
-                >
-
-                    <span class="admin-nav-icon">
-                        ⚙
-                    </span>
-
-                    <span>
-                        Settings
-                    </span>
-
-                </a>
-
-            </nav>
-
-
-            <!-- Sidebar bottom -->
-
-            <div class="admin-sidebar-bottom">
-
-                <a
-                    href="../index.html"
-                    class="view-site-link"
-                >
-
-                    <span>↗</span>
-
-                    View Website
-
-                </a>
-
-
-                <button
-                    class="admin-logout"
-                    id="logoutButton"
-                >
-
-                    <span>⇥</span>
-
-                    Logout
-
-                </button>
-
-            </div>
-
-
-        </aside>
-
-
-
-        <!-- =================================================
-             MAIN CONTENT
-        ================================================== -->
-
-        <main class="admin-main">
-
-
-            <!-- Top bar -->
-
-            <header class="admin-topbar">
-
-
-                <button
-                    class="admin-menu-button"
-                    id="adminMenuButton"
-                    aria-label="Open admin menu"
-                >
-                    ☰
-                </button>
-
-
-                <div class="admin-topbar-title">
-
-                    <span>
-                        ADMIN PANEL
-                    </span>
-
-                    <h1>
-                        Dashboard
-                    </h1>
-
-                </div>
-
-
-                <div class="admin-user">
-
-                    <div class="admin-user-avatar">
-                        A
-                    </div>
-
-                    <div class="admin-user-info">
-
-                        <strong>
-                            Administrator
-                        </strong>
-
-                        <span>
-                            Club Admin
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-            </header>
-
-
-
-            <!-- Dashboard content -->
-
-            <section class="admin-content">
-
-
-                <!-- Welcome -->
-
-                <div class="admin-welcome">
-
-                    <div>
-
-                        <span class="section-tag">
-                            ELITE BALLERS FC
-                        </span>
-
-                        <h2>
-                            Welcome back, <span>Admin.</span>
-                        </h2>
-
-                        <p>
-                            Manage your club, players, matches,
-                            news and team finances from one place.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     STAT CARDS
-                ================================================== -->
-
-                <div class="admin-stats-grid">
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            ♟
-                        </div>
-
-                        <div>
-
-                            <span>
-                                TOTAL PLAYERS
-                            </span>
-
-                            <strong>
-                                10
-                            </strong>
-
-                            <small>
-                                Active team members
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            📅
-                        </div>
-
-                        <div>
-
-                            <span>
-                                UPCOMING FIXTURES
-                            </span>
-
-                            <strong>
-                                3
-                            </strong>
-
-                            <small>
-                                Matches scheduled
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            🏆
-                        </div>
-
-                        <div>
-
-                            <span>
-                                MATCHES PLAYED
-                            </span>
-
-                            <strong>
-                                5
-                            </strong>
-
-                            <small>
-                                3 wins · 1 draw · 1 loss
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="admin-stat-card">
-
-                        <div class="admin-stat-icon">
-                            ₦
-                        </div>
-
-                        <div>
-
-                            <span>
-                                WEEKLY DUES
-                            </span>
-
-                            <strong>
-                                ₦100
-                            </strong>
-
-                            <small>
-                                Per team member
-                            </small>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- =================================================
-                     TWO COLUMN AREA
-                ================================================== -->
-
-                <div class="admin-dashboard-grid">
-
-
-                    <!-- Upcoming fixture -->
-
-                    <div class="admin-panel">
-
-
-                        <div class="admin-panel-header">
-
-                            <div>
-
-                                <span class="admin-panel-label">
-                                    NEXT MATCH
-                                </span>
-
-                                <h3>
-                                    Upcoming Fixture
-                                </h3>
-
-                            </div>
-
-                            <a href="fixtures.html">
-                                Manage
-                            </a>
-
-                        </div>
-
-
-                        <div class="next-match-card">
-
-
-                            <div class="next-match-date">
-
-                                <strong>
-                                    20
-                                </strong>
-
-                                <span>
-                                    SEP
-                                </span>
-
-                            </div>
-
-
-                            <div class="next-match-teams">
-
-                                <div class="team-mini">
-
-                                    <div class="team-mini-logo">
-                                        EB
-                                    </div>
-
-                                    <span>
-                                        Elite Ballers FC
-                                    </span>
-
-                                </div>
-
-
-                                <div class="match-time">
-
-                                    <strong>
-                                        4:00 PM
-                                    </strong>
-
-                                    <span>
-                                        FRIENDLY
-                                    </span>
-
-                                </div>
-
-
-                                <div class="team-mini">
-
-                                    <div class="team-mini-logo opponent">
-                                        CW
-                                    </div>
-
-                                    <span>
-                                        City Warriors
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <p class="match-location">
-                                📍 Local Football Field
-                            </p>
-
-
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- Recent result -->
-
-                    <div class="admin-panel">
-
-
-                        <div class="admin-panel-header">
-
-                            <div>
-
-                                <span class="admin-panel-label">
-                                    RECENT MATCH
-                                </span>
-
-                                <h3>
-                                    Latest Result
-                                </h3>
-
-                            </div>
-
-                            <a href="results.html">
-                                Manage
-                            </a>
-
-                        </div>
-
-
-                        <div class="latest-result-card">
-
-
-                            <span class="result-date-small">
-                                13 SEP 2026
-                            </span>
-
-
-                            <div class="latest-result-teams">
-
-                                <div>
-
-                                    <span>
-                                        Elite Ballers FC
-                                    </span>
-
-                                    <strong>
-                                        3
-                                    </strong>
-
-                                </div>
-
-
-                                <div class="latest-result-vs">
-                                    -
-                                </div>
-
-
-                                <div>
-
-                                    <strong>
-                                        1
-                                    </strong>
-
-                                    <span>
-                                        City Warriors
-                                    </span>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="dashboard-win">
-                                WIN
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-
-                <!-- =================================================
-                     QUICK ACTIONS
-                ================================================== -->
-
-                <div class="admin-panel quick-actions-panel">
-
-
-                    <div class="admin-panel-header">
-
-                        <div>
-
-                            <span class="admin-panel-label">
-                                SHORTCUTS
-                            </span>
-
-                            <h3>
-                                Quick Actions
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="quick-actions-grid">
-
-
-                        <a
-                            href="players.html"
-                            class="quick-action"
-                        >
-
-                            <span>
-                                ♟
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Add Player
-                                </strong>
-
-                                <small>
-                                    Register a new team member
-                                </small>
-
-                            </div>
-
-                            <b>
-                                →
-                            </b>
-
-                        </a>
-
-
-                        <a
-                            href="fixtures.html"
-                            class="quick-action"
-                        >
-
-                            <span>
-                                📅
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Add Fixture
-                                </strong>
-
-                                <small>
-                                    Schedule a match
-                                </small>
-
-                            </div>
-
-                            <b>
-                                →
-                            </b>
-
-                        </a>
-
-
-                        <a
-                            href="results.html"
-                            class="quick-action"
-                        >
-
-                            <span>
-                                🏆
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Add Result
-                                </strong>
-
-                                <small>
-                                    Record a match result
-                                </small>
-
-                            </div>
-
-                            <b>
-                                →
-                            </b>
-
-                        </a>
-
-
-                        <a
-                            href="news.html"
-                            class="quick-action"
-                        >
-
-                            <span>
-                                ◈
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Publish News
-                                </strong>
-
-                                <small>
-                                    Create a club update
-                                </small>
-
-                            </div>
-
-                            <b>
-                                →
-                            </b>
-
-                        </a>
-
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- =================================================
-                     RECENT ACTIVITY
-                ================================================== -->
-
-                <div class="admin-panel">
-
-
-                    <div class="admin-panel-header">
-
-                        <div>
-
-                            <span class="admin-panel-label">
-                                ACTIVITY
-                            </span>
-
-                            <h3>
-                                Recent Activity
-                            </h3>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="activity-list">
-
-
-                        <div class="activity-item">
-
-                            <div class="activity-icon">
-                                ✓
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    Match result recorded
-                                </strong>
-
-                                <p>
-                                    Elite Ballers FC defeated
-                                    City Warriors 3–1.
-                                </p>
-
-                            </div>
-
-                            <span>
-                                6 days ago
-                            </span>
-
-                        </div>
-
-
-                        <div class="activity-item">
-
-                            <div class="activity-icon">
-                                +
-                            </div>
-
-                            <div>
-
-                                <strong>
-                                    New fixture added
-                                </strong>
-
-                                <p>
-                                    City Warriors friendly scheduled
-                                    for September 20.
-                                </p>
-
-                            </div>
-
-                            <span>
-                                1

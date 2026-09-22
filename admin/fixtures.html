@@ -1,1 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fixtures | Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar"></aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><h1>Fixtures</h1></header>
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">FIXTURES</span><h3>Manage Fixtures</h3></div></div>
+          <div id="fixturesList">Loading...</div>
+          <form id="fixtureForm" style="margin-top:16px;">
+            <input name="home" placeholder="Home team" required>
+            <input name="away" placeholder="Away team" required>
+            <input name="date" placeholder="YYYY-MM-DD" required>
+            <input name="time" placeholder="Time">
+            <button class="btn btn-primary">Add Fixture</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="../js/admin.js"></script>
+  <script>
+    (async ()=>{
+      const list=document.getElementById('fixturesList');
+      const render=(rows)=>{ list.innerHTML=''; if(!rows.length) { list.textContent='No fixtures'; return } rows.forEach(f=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-content"><h4>${f.home} vs ${f.away}</h4><p>${f.date} ${f.time||''}</p></div>`; list.appendChild(el) }) }
+      if(window.SB){ const r=await window.SB.fetchAll('fixtures'); render(r.data||[]) }
+      document.getElementById('fixtureForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ home: fd.get('home'), away: fd.get('away'), date: fd.get('date'), time: fd.get('time') }; if(window.SB){ await window.SB.insert('fixtures', payload); const r=await window.SB.fetchAll('fixtures'); render(r.data||[]); e.target.reset(); } })
+    })();
+  </script>
+</body>
+</html>
 

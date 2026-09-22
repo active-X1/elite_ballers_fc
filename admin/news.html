@@ -1,1 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>News | Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page">
+  <div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>News</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">NEWS</span><h3>Club News</h3></div></div><div id="newsList">Loading...</div>
+    <form id="newsForm" style="margin-top:16px;"><input name="title" placeholder="Headline" required><input name="excerpt" placeholder="Short excerpt"><textarea name="body" placeholder="Full article" rows="6"></textarea><button class="btn btn-primary">Publish</button></form></div></section></main></div>
+  <script src="../js/admin.js"></script>
+  <script>
+    (async ()=>{
+      const nl=document.getElementById('newsList'); const render=(rows)=>{ nl.innerHTML=''; if(!rows.length){ nl.textContent='No news items'; return } rows.forEach(n=>{ const el=document.createElement('article'); el.className='news-card'; el.innerHTML=`<div class="news-image"><span>NEWS</span></div><div class="news-content"><span class="news-date">${new Date(n.created_at).toLocaleDateString()}</span><h3>${n.title}</h3><p>${n.excerpt||''}</p></div>`; nl.appendChild(el) }) }
+      if(window.SB){ const r=await window.SB.fetchAll('news'); render(r.data||[]) }
+      document.getElementById('newsForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ title: fd.get('title'), excerpt: fd.get('excerpt'), body: fd.get('body'), created_at: new Date().toISOString() }; if(window.SB){ await window.SB.insert('news', payload); const r=await window.SB.fetchAll('news'); render(r.data||[]); e.target.reset(); } })
+    })();
+  </script>
+</body>
+</html>
 

@@ -1,1 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset utf-8><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Results | Admin</title>
+  <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page"><div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Results</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">RESULTS</span><h3>Match Results</h3></div></div>
+  <div id="resultsList">Loading...</div>
+  <form id="resultForm" style="margin-top:14px;">
+    <input name="home" placeholder="Home team" required>
+    <input name="home_score" placeholder="Home score" required>
+    <input name="away" placeholder="Away team" required>
+    <input name="away_score" placeholder="Away score" required>
+    <button class="btn btn-primary">Add Result</button>
+  </form>
+  </div></section></main></div>
+  <script src="../js/admin.js"></script>
+  <script>
+    (async ()=>{
+      const rl=document.getElementById('resultsList'); const render=(rows)=>{ rl.innerHTML=''; if(!rows.length){rl.textContent='No results'; return} rows.forEach(r=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-content"><h3>${r.home} ${r.home_score} - ${r.away_score} ${r.away}</h3><p>${new Date(r.created_at||r.date||Date.now()).toLocaleDateString()}</p></div>`; rl.appendChild(el) }) }
+      if(window.SB){ const r=await window.SB.fetchAll('results'); render(r.data||[]) }
+      document.getElementById('resultForm').addEventListener('submit', async e=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ home:fd.get('home'), home_score:fd.get('home_score'), away:fd.get('away'), away_score:fd.get('away_score'), created_at:new Date().toISOString() }; if(window.SB){ await window.SB.insert('results', payload); const r=await window.SB.fetchAll('results'); render(r.data||[]); e.target.reset(); } })
+    })();
+  </script>
+</body>
+</html>
 

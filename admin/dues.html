@@ -1,1 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset utf-8><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dues | Admin</title>
+  <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page"><div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Team Dues</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">DUES</span><h3>Manage Team Dues</h3></div></div>
+  <div id="duesList">Loading...</div>
+  <form id="duesForm" style="margin-top:14px;"><input name="amount" placeholder="Amount (₦)" required><input name="notes" placeholder="Notes"><button class="btn btn-primary">Set Dues</button></form>
+  </div></section></main></div>
+  <script src="../js/admin.js"></script>
+  <script>
+    (async ()=>{
+      const dl=document.getElementById('duesList'); const render=(rows)=>{ dl.innerHTML=''; if(!rows.length){dl.textContent='No dues set'; return} rows.forEach(d=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-content"><h3>₦${d.amount}</h3><p>${d.notes||''}</p></div>`; dl.appendChild(el) }) }
+      if(window.SB){ const r=await window.SB.fetchAll('dues'); render(r.data||[]) }
+      document.getElementById('duesForm').addEventListener('submit', async e=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ amount: fd.get('amount'), notes: fd.get('notes'), created_at: new Date().toISOString() }; if(window.SB){ await window.SB.insert('dues', payload); const r=await window.SB.fetchAll('dues'); render(r.data||[]); e.target.reset(); } })
+    })();
+  </script>
+</body>
+</html>
 

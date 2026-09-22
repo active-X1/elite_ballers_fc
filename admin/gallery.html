@@ -1,1 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gallery | Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page">
+  <div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Gallery</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">GALLERY</span><h3>Manage Images</h3></div></div>
+    <div id="galleryList">Loading...</div>
+    <form id="galleryForm" style="margin-top:16px;" enctype="multipart/form-data">
+      <input name="title" placeholder="Image title" required>
+      <input type="file" id="imageFile" accept="image/*" required>
+      <button class="btn btn-primary">Upload</button>
+    </form>
+    </div></section></main></div>
+  <script src="../js/admin.js"></script>
+  <script>
+    (async ()=>{
+      const gl=document.getElementById('galleryList'); const render=(rows)=>{ gl.innerHTML=''; if(!rows.length){gl.textContent='No images'; return} rows.forEach(i=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-image" style="background-image:url(${i.url});background-size:cover"></div><div class="news-content"><h3>${i.title}</h3></div>`; gl.appendChild(el) }) }
+      if(window.SB){ const r=await window.SB.fetchAll('gallery'); render(r.data||[]) }
+      document.getElementById('galleryForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fileInput=document.getElementById('imageFile'); if(!fileInput.files.length) return; const file=fileInput.files[0]; // for now we store a placeholder URL, implementing signed uploads requires server keys
+        const payload={ title: e.target.title.value, url: URL.createObjectURL(file), created_at: new Date().toISOString() };
+        if(window.SB){ await window.SB.insert('gallery', payload); const r=await window.SB.fetchAll('gallery'); render(r.data||[]); e.target.reset(); }
+      })
+    })();
+  </script>
+</body>
+</html>
 

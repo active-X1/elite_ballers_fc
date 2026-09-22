@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Players | Admin</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
+  <script src="../js/supabase.js"></script>
+</head>
+<body class="admin-page">
+  <!-- minimal header/nav reused from dashboard -->
+  <div class="admin-layout">
+    <aside class="admin-sidebar"> <!-- static aside to keep layout consistent -->
+      <div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div>
+    </aside>
+    <main class="admin-main">
+      <header class="admin-topbar"><h1>Players</h1></header>
+
+      <section class="admin-content">
+        <div class="admin-panel">
+          <div class="admin-panel-header"><div><span class="admin-panel-label">PLAYERS</span><h3>Team Roster</h3></div><a href="players.html">Refresh</a></div>
+
+          <div id="playersList">Loading players...</div>
+
+          <form id="playerForm" style="margin-top:18px;">
+            <input name="name" placeholder="Player name" required>
+            <input name="number" placeholder="Number">
+            <input name="position" placeholder="Position">
+            <button type="submit" class="btn btn-primary">Add Player</button>
+          </form>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/admin.js"></script>
+  <script>
+    (async function(){
+      const list = document.getElementById('playersList');
+      const render = (rows)=>{
+        list.innerHTML = '';
+        if(!rows.length) { list.textContent='No players yet'; return; }
+        rows.forEach(p=>{
+          const d=document.createElement('div'); d.className='player-card'; d.innerHTML = `<div class="player-info"><h4>${p.name}</h4><div>${p.position||''} • #${p.number||''}</div></div>`; list.appendChild(d);
+        })
+      }
+
+      if(window.SB){
+        const res = await window.SB.fetchAll('players');
+        render(res.data||[]);
+      }
+
+      document.getElementById('playerForm').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const fd = new FormData(this);
+        const payload = {
+          name: fd.get('name'),
+          number: fd.get('number'),
+          position: fd.get('position')
+        };
+        if(window.SB){
+          await window.SB.insert('players', payload);
+          const res = await window.SB.fetchAll('players'); render(res.data||[]);
+          this.reset();
+        }
+      })
+    })();
+  </script>
+</body>
+</html>
 
