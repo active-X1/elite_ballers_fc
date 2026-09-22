@@ -183,148 +183,61 @@
 
 
     <!-- ==============================
-         LOGIN SCRIPT
+         LOGIN SCRIPT (Supabase)
     =============================== -->
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="/js/supabase.js"></script>
     <script>
+        const loginForm = document.getElementById('adminLoginForm');
+        const passwordInput = document.getElementById('adminPassword');
+        const passwordToggle = document.getElementById('passwordToggle');
+        const loginMessage = document.getElementById('loginMessage');
 
-        const loginForm =
-            document.getElementById("adminLoginForm");
-
-        const passwordInput =
-            document.getElementById("adminPassword");
-
-        const passwordToggle =
-            document.getElementById("passwordToggle");
-
-        const loginMessage =
-            document.getElementById("loginMessage");
-
-
-        /* ============================
-           SHOW / HIDE PASSWORD
-        ============================ */
-
-        passwordToggle.addEventListener("click", function () {
-
-            if (passwordInput.type === "password") {
-
-                passwordInput.type = "text";
-
-                passwordToggle.textContent = "🙈";
-
-                passwordToggle.setAttribute(
-                    "aria-label",
-                    "Hide password"
-                );
-
+        passwordToggle.addEventListener('click', function () {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordToggle.textContent = '🙈';
+                passwordToggle.setAttribute('aria-label', 'Hide password');
             } else {
+                passwordInput.type = 'password';
+                passwordToggle.textContent = '👁';
+                passwordToggle.setAttribute('aria-label', 'Show password');
+            }
+        });
 
-                passwordInput.type = "password";
+        loginForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const email = document.getElementById('adminUsername').value.trim();
+            const password = passwordInput.value;
+            loginMessage.className = 'login-message';
 
-                passwordToggle.textContent = "👁";
-
-                passwordToggle.setAttribute(
-                    "aria-label",
-                    "Show password"
-                );
-
+            if (!window.SB || !window.SB.client) {
+                loginMessage.textContent = 'Authentication not available';
+                loginMessage.classList.add('error');
+                return;
             }
 
-        });
+            loginMessage.textContent = 'Signing in...';
 
+            const { user, session, error } = await window.SB.client.auth.signIn({ email, password });
 
-        /* ============================
-           LOGIN
-        ============================ */
-
-        loginForm.addEventListener("submit", function (event) {
-
-            event.preventDefault();
-
-
-            const username =
-                document.getElementById("adminUsername")
-                .value
-                .trim();
-
-            const password =
-                passwordInput.value;
-
-
-            loginMessage.className =
-                "login-message";
-
-
-            /*
-             * DEMO LOGIN
-             *
-             * This is NOT secure authentication.
-             *
-             * We will replace this with a proper
-             * authentication system later.
-             */
-
-            const demoUsername = "admin";
-            const demoPassword = "elite123";
-
-
-            if (
-                username === demoUsername &&
-                password === demoPassword
-            ) {
-
-                loginMessage.textContent =
-                    "Login successful. Opening dashboard...";
-
-                loginMessage.classList.add("success");
-
-
-                /*
-                 * Small delay so the user can see
-                 * the success message.
-                 */
-
-                setTimeout(function () {
-
-                    window.location.href =
-                        "dashboard.html";
-
-                }, 700);
-
-
-            } else {
-
-                loginMessage.textContent =
-                    "Invalid username or password.";
-
-                loginMessage.classList.add("error");
-
+            if (error) {
+                loginMessage.textContent = error.message || 'Sign-in failed';
+                loginMessage.classList.add('error');
+                return;
             }
 
+            loginMessage.textContent = 'Login successful. Redirecting...';
+            loginMessage.classList.add('success');
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 600);
         });
 
-
-        /* ============================
-           FORGOT PASSWORD
-        ============================ */
-
-        const forgotPassword =
-            document.querySelector(".forgot-password");
-
-
-        forgotPassword.addEventListener("click", function (event) {
-
-            event.preventDefault();
-
-            loginMessage.className =
-                "login-message info";
-
-            loginMessage.textContent =
-                "Password recovery will be connected later.";
-
+        document.querySelector('.forgot-password').addEventListener('click', function (e) {
+            e.preventDefault();
+            loginMessage.className = 'login-message info';
+            loginMessage.textContent = 'Password recovery will be connected later.';
         });
-
     </script>
 
 </body>
