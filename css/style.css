@@ -2369,6 +2369,20 @@ button {
     margin: 8px 0 12px;
 }
 
+.whatsapp-content h2 span {
+    color: var(--primary);
+}
+
+.whatsapp-button.is-disabled {
+    opacity: .5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.coach-contact strong {
+    font-weight: 800;
+}
+
 .whatsapp-content p {
     color: #aaa;
 

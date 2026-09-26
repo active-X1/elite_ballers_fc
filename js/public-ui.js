@@ -41,6 +41,20 @@
     const locationEl=document.querySelector('[data-training-location]');
     if(locationEl && s.training_location) locationEl.textContent=s.training_location;
 
+    const coachContact=document.getElementById('coachContact');
+    if(coachContact){
+      const emailLine=document.getElementById('coachEmailLine');
+      const emailValue=document.getElementById('coachEmailValue');
+      const locationLine=document.getElementById('coachLocationLine');
+      const locationValue=document.getElementById('coachLocationValue');
+      let hasAny=false;
+      if(s.contact_email){ if(emailValue) emailValue.textContent=s.contact_email; hasAny=true; }
+      else if(emailLine) emailLine.hidden=true;
+      if(s.training_location){ if(locationValue) locationValue.textContent=s.training_location; hasAny=true; }
+      else if(locationLine) locationLine.hidden=true;
+      coachContact.hidden=!hasAny;
+    }
+
     if(form){
       form.addEventListener('submit', e=>{
         e.preventDefault();
