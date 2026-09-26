@@ -1,71 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Dues | Elite Ballers FC</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Weekly Dues | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Dues</h1></div></header>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">DUES</span><h3>Track Payments</h3></div></div>
-          <form id="duesForm" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-            <input id="payerName" placeholder="Member name" required>
-            <input id="amount" placeholder="Amount" required>
-            <input id="week" placeholder="Week (e.g. 2026-W37)" required>
-            <button class="btn btn-primary" type="submit">Add Payment</button>
-          </form>
-          <div style="margin-top:12px;display:flex;gap:8px;"><button id="exportCsv" class="btn">Download CSV</button><button id="refreshDues" class="btn">Refresh</button></div>
-          <div id="duesList" style="margin-top:18px"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/js/supabase.js"></script>
-  <script src="/js/admin.js"></script>
-  <script type="module">
-    import AdminCRUD from '/js/admin-crud.js';
-    const duesList=document.getElementById('duesList');
-    const duesForm=document.getElementById('duesForm');
-    async function renderDues(items){ duesList.innerHTML = items.map(d=>`<div style="padding:10px;border-bottom:1px solid var(--border)"><input type="checkbox" data-id="${d.id}" ${d.paid? 'checked': ''}> <strong>${d.payer}</strong> — ${d.amount} <small style="color:var(--text-muted)">(${d.week})</small> <button data-id="${d.id}" data-action="delete">Delete</button></div>`).join('');
-      duesList.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change', async ()=>{ const id=cb.dataset.id; await AdminCRUD.updateItem('dues', id, { paid: cb.checked }); }));
-      duesList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click', async ()=>{ if(!confirm('Delete payment?')) return; await AdminCRUD.deleteItem('dues', b.dataset.id); loadDues(); })); }
-    async function loadDues(){ await AdminCRUD.loadList('dues', renderDues); }
-    duesForm.addEventListener('submit', async e=>{ e.preventDefault(); const payer=document.getElementById('payerName').value.trim(); const amount=document.getElementById('amount').value.trim(); const week=document.getElementById('week').value.trim(); await AdminCRUD.addItem('dues', { payer, amount, week, paid: false }); duesForm.reset(); loadDues(); });
-    document.getElementById('exportCsv').addEventListener('click', async ()=>{ const rows = await AdminCRUD.loadList('dues', (d)=>{}); if(rows) AdminCRUD.csvDownload('dues.csv', rows); });
-    document.getElementById('refreshDues').addEventListener('click', (e)=>{ e.preventDefault(); loadDues(); });
-    loadDues();
-  </script>
-</body>
-</html>
-<!doctype html>
-<html>
-<head>
-  <meta charset utf-8><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Dues | Admin</title>
-  <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
-  <script src="../js/supabase.js"></script>
-</head>
-<body class="admin-page"><div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Team Dues</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">DUES</span><h3>Manage Team Dues</h3></div></div>
-  <div id="duesList">Loading...</div>
-  <form id="duesForm" style="margin-top:14px;"><input name="amount" placeholder="Amount (₦)" required><input name="notes" placeholder="Notes"><button class="btn btn-primary">Set Dues</button></form>
-  </div></section></main></div>
-  <script src="../js/admin.js"></script>
-  <script>
-    (async ()=>{
-      const dl=document.getElementById('duesList'); const render=(rows)=>{ dl.innerHTML=''; if(!rows.length){dl.textContent='No dues set'; return} rows.forEach(d=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-content"><h3>₦${d.amount}</h3><p>${d.notes||''}</p></div>`; dl.appendChild(el) }) }
-      if(window.SB){ const r=await window.SB.fetchAll('dues'); render(r.data||[]) }
-      document.getElementById('duesForm').addEventListener('submit', async e=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ amount: fd.get('amount'), notes: fd.get('notes'), created_at: new Date().toISOString() }; if(window.SB){ await window.SB.insert('dues', payload); const r=await window.SB.fetchAll('dues'); render(r.data||[]); e.target.reset(); } })
-    })();
-  </script>
-</body>
-</html>
-
+<body data-page="dues.html" data-title="Weekly Dues" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head"><div><span class="eyebrow">TEAM FINANCE</span><h2>Weekly Dues</h2><p>Mark each player's payment by week, just like a simple spreadsheet.</p></div><div class="page-actions"><button class="btn" id="shareDues">↗ Share</button><button class="btn" id="downloadCsv">↓ CSV</button><button class="btn" id="downloadXlsx">↓ Excel</button></div></section>
+<section class="card"><div class="toolbar"><div class="field" style="min-width:190px;flex:1"><label style="font-size:.7rem;color:var(--adm-muted)">First week</label><input id="weekStart" type="date"></div><div class="field" style="width:150px"><label style="font-size:.7rem;color:var(--adm-muted)">Weeks</label><select id="weekCount"><option>4</option><option selected>8</option><option>12</option><option>16</option></select></div><div style="display:flex;align-items:end"><button class="btn" id="setMonday">Snap to Monday</button></div></div><div class="dues-summary"><div class="dues-kpi"><small>PLAYERS</small><strong id="duesPlayers">—</strong></div><div class="dues-kpi"><small>PAID CELLS</small><strong id="duesPaid">—</strong></div><div class="dues-kpi"><small>EXPECTED</small><strong id="duesExpected">—</strong></div><div class="dues-kpi"><small>COLLECTED</small><strong id="duesCollected">—</strong></div></div><div class="dues-wrap"><table class="dues-table" id="duesTable"><thead></thead><tbody></tbody></table></div><div class="card-body"><span class="helper">Tap a week box to mark paid. Every change saves immediately. The amount comes from your <code>club_settings</code> value <code>dues_amount</code>; 100 is the fallback.</span></div></section>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script><script src="../js/supabase.js"></script><script src="../js/admin-guard.js"></script><script src="../js/admin-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script><script>
+(async()=>{const $=id=>document.getElementById(id);let players=[],payments=new Map(),amount=100;const toast=(m,e=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',e);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)};const money=n=>`₦${Number(n||0).toLocaleString('en-NG')}`;function monday(v){const d=new Date(`${v||new Date().toISOString().slice(0,10)}T00:00:00`);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d}function dateKey(d){const x=new Date(d);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}function weeks(){const start=monday($('weekStart').value),count=Number($('weekCount').value);return Array.from({length:count},(_,i)=>{const d=new Date(start);d.setDate(d.getDate()+i*7);return dateKey(d)})}async function loadData(){if(!SB){toast('Supabase is not configured.',true);return}const ws=weeks(),start=ws[0],end=ws[ws.length-1];const [p,d,s]=await Promise.all([SB.fetchAll('players',{orderBy:'number'}),SB.fetchAll('dues',{gte:{column:'week_start',value:start},lte:{column:'week_start',value:end},orderBy:'week_start',ascending:false,limit:5000}),SB.fetchAll('club_settings',{filters:{key:'dues_amount'},limit:1})]);if(p.error||d.error){toast('Could not load dues data.',true);return}players=p.data||[];amount=Number(s.data?.[0]?.value)||100;payments=new Map((d.data||[]).map(x=>[`${x.player_id}|${x.week_start}`,x]));render()}function render(){const ws=weeks(),thead=$('duesTable').querySelector('thead'),tbody=$('duesTable').querySelector('tbody');thead.innerHTML=`<tr><th class="sticky-player">Player</th>${ws.map(w=>{const d=new Date(`${w}T00:00:00`);return `<th>${d.toLocaleDateString([], {weekday:'short'})}<span class="week-date">${d.toLocaleDateString([], {month:'short',day:'numeric'})}</span></th>`}).join('')}<th>Total</th></tr>`;tbody.innerHTML=players.map(p=>{let total=0;const cells=ws.map(w=>{const rec=payments.get(`${p.id}|${w}`),paid=Boolean(rec?.paid);if(paid)total++;return `<td class="${paid?'paid':''}"><button class="due-cell ${paid?'paid':''}" data-player="${p.id}" data-week="${w}" aria-label="${paid?'Mark unpaid':'Mark paid'} for ${p.name}">${paid?'✓':''}</button></td>`}).join('');return `<tr><td class="sticky-player"><div>${p.number!=null?`#${p.number} `:''}${p.name}</div><span class="week-date">${p.position||'Player'}</span></td>${cells}<td class="due-total">${total}/${ws.length}</td></tr>`}).join('')||'<tr><td colspan="99" class="empty">No players found.</td></tr>';let paidCells=0;payments.forEach(r=>{if(r.paid&&ws.includes(r.week_start))paidCells++});$('duesPlayers').textContent=players.length;$('duesPaid').textContent=paidCells;$('duesExpected').textContent=money(players.length*ws.length*amount);$('duesCollected').textContent=money([...payments.values()].filter(r=>r.paid&&ws.includes(r.week_start)).reduce((sum,r)=>sum+Number(r.amount||amount),0))}async function toggle(btn){const playerId=btn.dataset.player,week=btn.dataset.week,key=`${playerId}|${week}`,existing=payments.get(key),shouldPay=!existing?.paid;btn.disabled=true;try{let r;if(shouldPay){r=existing?await SB.update('dues',existing.id,{player_name:players.find(p=>p.id===playerId)?.name||'Player',amount,paid:true,paid_at:new Date().toISOString()}):await SB.insert('dues',{player_id:playerId,player_name:players.find(p=>p.id===playerId)?.name||'Player',amount,week_start:week,paid:true,paid_at:new Date().toISOString()})}else{r=await SB.remove('dues',existing.id)}if(r?.error)throw r.error;if(shouldPay)payments.set(key,r.data);else payments.delete(key);render()}catch(e){toast(e.message||'Could not save payment.',true)}finally{btn.disabled=false}}document.addEventListener('click',e=>{const b=e.target.closest('.due-cell');if(b)toggle(b)});$('weekStart').value=dateKey(monday(new Date().toISOString().slice(0,10)));$('weekStart').onchange=loadData;$('weekCount').onchange=loadData;$('setMonday').onclick=()=>{$('weekStart').value=dateKey(monday($('weekStart').value));render()};function matrix(){const ws=weeks(),headers=['Player',...ws.map(w=>new Date(`${w}T00:00:00`).toLocaleDateString('en-NG',{day:'2-digit',month:'short'})),'Paid'];return {headers,rows:players.map(p=>{let c=0;const vals=ws.map(w=>{const paid=payments.get(`${p.id}|${w}`)?.paid?1:0;c+=paid;return paid?'PAID':''});return [p.name,...vals,`${c}/${ws.length}`]})}}function csvText(){const {headers,rows}=matrix();const escv=v=>`"${String(v??'').replace(/"/g,'""')}"`;return [headers,...rows].map(r=>r.map(escv).join(',')).join('\n')}function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}$('downloadCsv').onclick=()=>downloadBlob(new Blob([csvText()],{type:'text/csv;charset=utf-8'}),`elite-ballers-dues-${dateKey(new Date())}.csv`);$('downloadXlsx').onclick=()=>{if(!window.XLSX){toast('Excel export library is unavailable. Use CSV.',true);return}const {headers,rows}=matrix(),ws=XLSX.utils.aoa_to_sheet([headers,...rows]),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Weekly Dues');XLSX.writeFile(wb,`elite-ballers-dues-${dateKey(new Date())}.xlsx`)};$('shareDues').onclick=async()=>{const text=`Elite Ballers FC weekly dues\nPlayers: ${players.length}\nPaid cells: ${$('duesPaid').textContent}\nCollected: ${$('duesCollected').textContent}`;try{const blob=new Blob([csvText()],{type:'text/csv'}),file=new File([blob],`elite-ballers-dues-${dateKey(new Date())}.csv`,{type:'text/csv'});if(navigator.share&&(navigator.canShare?.({files:[file]})||!navigator.canShare)){await navigator.share({title:'Elite Ballers FC — Weekly Dues',text,files:[file]})}else if(navigator.clipboard){await navigator.clipboard.writeText(text);toast('Summary copied — ready to share')}else toast(text)}catch(e){if(e.name!=='AbortError')toast('Could not share. Use CSV download.',true)}};loadData()})();
+</script>
+</body></html>

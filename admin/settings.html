@@ -1,63 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Settings | Elite Ballers FC</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d4ff00">
+<title>Settings | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Settings</h1></div></header>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">SETTINGS</span><h3>Account Settings</h3></div></div>
-          <form id="passwordForm" style="display:flex;flex-direction:column;gap:8px;max-width:420px;">
-            <input id="currentPassword" type="password" placeholder="Current Password (for reauth)" required>
-            <input id="newPassword" type="password" placeholder="New Password" required>
-            <button class="btn btn-primary" type="submit">Change Password</button>
-          </form>
-        </div>
-      </section>
-    </main>
+<body data-page="settings.html" data-title="Settings" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head">
+  <div><span class="eyebrow">CLUB CONTROL</span><h2>Settings</h2><p>Manage public club details, weekly dues and your admin account.</p></div>
+</section>
+<div class="split">
+<section class="card">
+  <div class="card-head"><div><small>PUBLIC PROFILE</small><h3>Club information</h3></div></div>
+  <div class="card-body">
+    <form id="clubSettingsForm" class="form-grid">
+      <div class="field full"><label for="clubName">Club name</label><input id="clubName" maxlength="100" required></div>
+      <div class="field"><label for="duesAmount">Weekly dues (₦)</label><input id="duesAmount" type="number" min="0" max="1000000" inputmode="numeric" required></div>
+      <div class="field"><label for="contactEmail">Contact email</label><input id="contactEmail" type="email" placeholder="Optional"></div>
+      <div class="field"><label for="whatsappNumber">WhatsApp number</label><input id="whatsappNumber" inputmode="tel" placeholder="2348012345678"><span class="helper">Use country code, digits only.</span></div>
+      <div class="field"><label for="trainingLocation">Training location</label><input id="trainingLocation" maxlength="160" placeholder="Optional"></div>
+      <div class="field"><label for="coachName">Head coach</label><input id="coachName" maxlength="100" placeholder="Optional"></div>
+      <div class="field full"><label for="coachBio">Coach profile</label><textarea id="coachBio" rows="5" maxlength="800" placeholder="Short public coach profile"></textarea></div>
+      <div class="form-actions full"><button class="btn primary" id="saveClubSettings" type="submit">Save club settings</button></div>
+    </form>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/js/supabase.js"></script>
-  <script src="/js/admin.js"></script>
-  <script>
-    document.getElementById('passwordForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const current = document.getElementById('currentPassword').value.trim();
-      const next = document.getElementById('newPassword').value.trim();
-      if (!window.SB || !window.SB.client) return alert('Supabase not loaded');
-      try {
-        // Attempt a re-auth by signing in again (demo flow). In production use secure flows.
-        const user = window.SB.getUser();
-        if (!user) return alert('Not signed in');
-        const { error } = await window.SB.client.auth.update({ password: next });
-        if (error) return alert('Error: ' + error.message);
-        alert('Password updated');
-      } catch (err) {
-        console.error(err);
-        alert('Update failed');
-      }
-    });
-  </script>
-</body>
-</html>
-<!doctype html>
-<html>
-<head>
-  <meta charset utf-8><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Settings | Admin</title>
-  <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css">
-</head>
-<body class="admin-page"><div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Settings</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">SETTINGS</span><h3>Site Settings</h3></div></div>
-  <p>Configure site-level settings here. For deployment, set `SUPABASE_URL` and `SUPABASE_ANON_KEY` as environment variables in Vercel. This page will be extended later to show live editable settings.</p>
-  </div></section></main></div>
-</body>
-</html>
-
+</section>
+<section class="card">
+  <div class="card-head"><div><small>ACCOUNT</small><h3>Admin security</h3></div></div>
+  <div class="card-body">
+    <p class="helper">Signed in as <strong id="accountEmail">Loading…</strong></p>
+    <form id="passwordForm" class="form-grid" style="margin-top:12px">
+      <div class="field full"><label for="newPassword">New password</label><input id="newPassword" type="password" minlength="8" autocomplete="new-password" required placeholder="At least 8 characters"></div>
+      <div class="field full"><label for="confirmPassword">Confirm password</label><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required placeholder="Repeat new password"></div>
+      <div class="form-actions full"><button class="btn primary" id="savePassword" type="submit">Update password</button></div>
+    </form>
+    <button class="btn" id="logoutSettings" style="margin-top:12px">⇥ Log out</button>
+  </div>
+</section>
+</div>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/admin-guard.js"></script>
+<script src="../js/admin-ui.js"></script>
+<script>
+(async()=>{
+  const $=id=>document.getElementById(id);
+  const toast=(m,e=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',e);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)};
+  const defaults={club_name:'Elite Ballers FC',dues_amount:'100',contact_email:'',whatsapp_number:'',training_location:'',coach_name:'',coach_bio:''};
+  async function load(){
+    if(!SB){toast('Supabase is not configured.',true);return}
+    const [settings,user]=await Promise.all([SB.fetchAll('club_settings'),SB.getUser()]);
+    if(settings.error){toast(settings.error.message,true);return}
+    const values={...defaults,...Object.fromEntries((settings.data||[]).map(x=>[x.key,x.value??'']))};
+    $('clubName').value=values.club_name;$('duesAmount').value=Number(values.dues_amount)||100;$('contactEmail').value=values.contact_email;$('whatsappNumber').value=values.whatsapp_number;$('trainingLocation').value=values.training_location;$('coachName').value=values.coach_name;$('coachBio').value=values.coach_bio;
+    $('accountEmail').textContent=user?.email||'Admin';
+  }
+  $('clubSettingsForm').onsubmit=async e=>{
+    e.preventDefault();
+    if(!SB)return toast('Supabase is not configured.',true);
+    const values={club_name:$('clubName').value.trim(),dues_amount:String(Math.max(0,Number($('duesAmount').value)||0)),contact_email:$('contactEmail').value.trim(),whatsapp_number:$('whatsappNumber').value.replace(/\D/g,''),training_location:$('trainingLocation').value.trim(),coach_name:$('coachName').value.trim(),coach_bio:$('coachBio').value.trim()};
+    $('saveClubSettings').disabled=true;
+    try{
+      const results=await Promise.all(Object.entries(values).map(([key,value])=>SB.upsert('club_settings',{key,value},'key')));
+      const failed=results.find(r=>r.error);
+      if(failed)throw failed.error;
+      toast('Club settings saved ✓');
+    }catch(err){toast(err.message||'Could not save settings.',true)}
+    finally{$('saveClubSettings').disabled=false}
+  };
+  $('passwordForm').onsubmit=async e=>{
+    e.preventDefault();const a=$('newPassword').value,b=$('confirmPassword').value;
+    if(a!==b)return toast('Passwords do not match.',true);if(a.length<8)return toast('Use at least 8 characters.',true);
+    if(!SB)return toast('Supabase is not configured.',true);
+    $('savePassword').disabled=true;try{const r=await SB.updatePassword(a);if(r.error)throw r.error;$('passwordForm').reset();toast('Password updated ✓')}catch(err){toast(err.message||'Could not update password.',true)}finally{$('savePassword').disabled=false}
+  };
+  $('logoutSettings').onclick=async()=>{await SB?.signOut();location.href='login.html'};
+  load();
+})();
+</script>
+</body></html>

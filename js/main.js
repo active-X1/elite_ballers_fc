@@ -51,18 +51,18 @@ navigationLinks.forEach((link) => {
 
 const revealItems = document.querySelectorAll('.section-heading, .match-card, .result-card, .stat-card, .news-card, .club-cta, .footer-content, .intro-content');
 
-const revealObserver = new IntersectionObserver((entries) => {
+const revealObserver = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
             revealObserver.unobserve(entry.target);
         }
     });
-}, { threshold: 0.12 });
+}, { threshold: 0.12 }) : null;
 
 revealItems.forEach((item) => {
     item.classList.add('reveal');
-    revealObserver.observe(item);
+    if (revealObserver) revealObserver.observe(item); else item.classList.add('visible');
 });
 
 

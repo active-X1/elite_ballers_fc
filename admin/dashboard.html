@@ -1,197 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Dashboard | Elite Ballers FC Admin</title>
-
-    <meta
-        name="description"
-        content="Elite Ballers FC administration dashboard."
-    >
-
-    <link rel="stylesheet" href="../css/style.css">
-
-    <link rel="stylesheet" href="../css/admin.css">
-
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dashboard | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-
-
-<body class="admin-page">
-
-
-    <!-- =====================================================
-         ADMIN LAYOUT
-    ====================================================== -->
-
-    <div class="admin-layout">
-
-
-        <!-- =================================================
-             SIDEBAR
-        ================================================== -->
-
-        <aside class="admin-sidebar" id="adminSidebar">
-
-
-            <!-- Logo -->
-
-            <div class="admin-sidebar-header">
-
-                <a
-                    href="../index.html"
-                    class="admin-sidebar-logo"
-                >
-                    <span>ELITE</span>
-                    BALLERS FC
-                <!DOCTYPE html>
-                <html lang="en">
-
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Dashboard | Elite Ballers FC Admin</title>
-                    <meta name="description" content="Elite Ballers FC administration dashboard.">
-                    <link rel="stylesheet" href="../css/style.css">
-                    <link rel="stylesheet" href="../css/admin.css">
-                </head>
-
-                <body class="admin-page">
-
-                    <div class="admin-layout">
-
-                        <aside class="admin-sidebar" id="adminSidebar">
-                            <div class="admin-sidebar-header">
-                                <a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a>
-                            </div>
-
-                            <nav class="admin-nav">
-                                <span class="admin-nav-title">MAIN MENU</span>
-                                <a href="dashboard.html" class="admin-nav-link active"><span class="admin-nav-icon">▣</span><span>Dashboard</span></a>
-                                <a href="players.html" class="admin-nav-link"><span class="admin-nav-icon">♟</span><span>Players</span></a>
-                                <a href="fixtures.html" class="admin-nav-link"><span class="admin-nav-icon">📅</span><span>Fixtures</span></a>
-                                <a href="results.html" class="admin-nav-link"><span class="admin-nav-icon">🏆</span><span>Results</span></a>
-
-                                <span class="admin-nav-title">CONTENT</span>
-                                <a href="gallery.html" class="admin-nav-link"><span class="admin-nav-icon">▧</span><span>Gallery</span></a>
-                                <a href="news.html" class="admin-nav-link"><span class="admin-nav-icon">◈</span><span>News</span></a>
-
-                                <span class="admin-nav-title">TEAM MANAGEMENT</span>
-                                <a href="dues.html" class="admin-nav-link"><span class="admin-nav-icon">₦</span><span>Team Dues</span></a>
-                                <a href="settings.html" class="admin-nav-link"><span class="admin-nav-icon">⚙</span><span>Settings</span></a>
-                            </nav>
-
-                            <div class="admin-sidebar-bottom">
-                                <a href="../index.html" class="view-site-link"><span>↗</span> View Website</a>
-                                <button class="admin-logout" id="logoutButton"><span>⇥</span> Logout</button>
-                            </div>
-                        </aside>
-
-                        <main class="admin-main">
-                            <header class="admin-topbar">
-                                <button class="admin-menu-button" id="adminMenuButton" aria-label="Open admin menu">☰</button>
-                                <div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Dashboard</h1></div>
-                                <div class="admin-user"><div class="admin-user-avatar">A</div><div class="admin-user-info"><strong>Administrator</strong><span>Club Admin</span></div></div>
-                            </header>
-
-                            <!-- Top icon shortcuts (app-like) -->
-                            <div class="admin-top-icons" role="navigation" aria-label="Quick admin sections">
-                                <a href="dashboard.html"><span class="icon">▣</span>Dashboard</a>
-                                <a href="players.html"><span class="icon">♟</span>Players</a>
-                                <a href="fixtures.html"><span class="icon">📅</span>Fixtures</a>
-                                <a href="results.html"><span class="icon">🏆</span>Results</a>
-                                <a href="gallery.html"><span class="icon">▧</span>Gallery</a>
-                                <a href="news.html"><span class="icon">◈</span>News</a>
-                                <a href="dues.html"><span class="icon">₦</span>Dues</a>
-                                <a href="settings.html"><span class="icon">⚙</span>Settings</a>
-                            </div>
-
-                            <section class="admin-content">
-                                <div class="admin-welcome">
-                                    <div>
-                                        <span class="section-tag">ELITE BALLERS FC</span>
-                                        <h2>Welcome back, <span>Admin.</span></h2>
-                                        <p>Manage your club, players, matches, news and team finances from one place.</p>
-                                    </div>
-                                </div>
-
-                                <div class="admin-stats-grid">
-                                    <div class="admin-stat-card"><div class="admin-stat-icon">♟</div><div><span>TOTAL PLAYERS</span><strong id="statPlayers">—</strong><small>Active team members</small></div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-icon">📅</div><div><span>UPCOMING FIXTURES</span><strong id="statFixtures">—</strong><small>Matches scheduled</small></div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-icon">🏆</div><div><span>MATCHES PLAYED</span><strong id="statMatches">—</strong><small>Wins · Draws · Losses</small></div></div>
-                                    <div class="admin-stat-card"><div class="admin-stat-icon">₦</div><div><span>WEEKLY DUES</span><strong id="statDues">—</strong><small>Per team member</small></div></div>
-                                </div>
-
-                                <div class="admin-dashboard-grid">
-                                    <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">NEXT MATCH</span><h3>Upcoming Fixture</h3></div><a href="fixtures.html">Manage</a></div><div class="next-match-card" id="nextMatchCard"><p>Loading...</p></div></div>
-                                    <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">RECENT MATCH</span><h3>Latest Result</h3></div><a href="results.html">Manage</a></div><div class="latest-result-card" id="latestResultCard"><p>Loading...</p></div></div>
-                                </div>
-
-                                <div class="admin-panel quick-actions-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">SHORTCUTS</span><h3>Quick Actions</h3></div></div><div class="quick-actions-grid"><a href="players.html" class="quick-action"><span>♟</span><div><strong>Add Player</strong><small>Register a new team member</small></div><b>→</b></a><a href="fixtures.html" class="quick-action"><span>📅</span><div><strong>Add Fixture</strong><small>Schedule a match</small></div><b>→</b></a><a href="results.html" class="quick-action"><span>🏆</span><div><strong>Add Result</strong><small>Record a match result</small></div><b>→</b></a><a href="news.html" class="quick-action"><span>◈</span><div><strong>Publish News</strong><small>Create a club update</small></div><b>→</b></a></div></div>
-
-                                <div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">ACTIVITY</span><h3>Recent Activity</h3></div></div><div class="activity-list" id="activityList"><p>Loading...</p></div></div>
-
-                            </section>
-                        </main>
-
-                    </div>
-
-                    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
-                    <script src="../js/supabase.js"></script>
-                    <script src="../js/admin.js"></script>
-
-                    <script>
-                        // Load simple dashboard data from Supabase (best-effort, no errors thrown)
-                        (async function () {
-                            try {
-                                if (!window.SB) return;
-                                const [players, fixtures, results, dues, news] = await Promise.all([
-                                    window.SB.fetchAll('players'),
-                                    window.SB.fetchAll('fixtures'),
-                                    window.SB.fetchAll('results'),
-                                    window.SB.fetchAll('dues'),
-                                    window.SB.fetchAll('news')
-                                ]);
-
-                                document.getElementById('statPlayers').textContent = (players.data || []).length || '0';
-                                document.getElementById('statFixtures').textContent = (fixtures.data || []).length || '0';
-                                document.getElementById('statMatches').textContent = (results.data || []).length || '0';
-                                document.getElementById('statDues').textContent = (dues.data && dues.data[0] && dues.data[0].amount) ? dues.data[0].amount : '—';
-
-                                const next = (fixtures.data || [])[0];
-                                const latest = (results.data || [])[0];
-
-                                const nextMatchCard = document.getElementById('nextMatchCard');
-                                if (next) nextMatchCard.innerHTML = `<div><strong>${next.date || ''}</strong><p>${next.home || 'Elite Ballers FC'} vs ${next.away || 'Opponent'}</p></div>`;
-                                else nextMatchCard.innerHTML = '<p>No upcoming match</p>';
-
-                                const latestResultCard = document.getElementById('latestResultCard');
-                                if (latest) latestResultCard.innerHTML = `<div><strong>${latest.home_score} - ${latest.away_score}</strong><p>${latest.home} vs ${latest.away}</p></div>`;
-                                else latestResultCard.innerHTML = '<p>No recent results</p>';
-
-                                const activityList = document.getElementById('activityList');
-                                activityList.innerHTML = '';
-                                (news.data || []).slice(0,6).forEach(n => {
-                                    const item = document.createElement('div');
-                                    item.className = 'activity-item';
-                                    item.innerHTML = `<div class="activity-icon">◈</div><div><strong>${n.title}</strong><p>${n.excerpt||''}</p></div><span>${new Date(n.created_at).toLocaleDateString()}</span>`;
-                                    activityList.appendChild(item);
-                                });
-
-                            } catch (e) {
-                                console.warn('Dashboard load error', e);
-                            }
-                        })();
-                    </script>
-
-                </body>
-
-                </html>
-                        Team Dues
+<body data-page="dashboard.html" data-title="Dashboard" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head"><div><span class="eyebrow">COMMAND CENTER</span><h2>Club overview</h2><p>Everything important at a glance.</p></div><div class="page-actions"><button class="btn" id="refreshDashboard">↻ Refresh</button><a class="btn primary" href="players.html">＋ Add Player</a></div></section>
+<div class="kpis"><article class="kpi"><span class="kpi-label">ACTIVE PLAYERS</span><div class="kpi-value" id="kpiPlayers">—</div><div class="kpi-note">Official roster</div></article><article class="kpi"><span class="kpi-label">UPCOMING</span><div class="kpi-value" id="kpiFixtures">—</div><div class="kpi-note">Scheduled fixtures</div></article><article class="kpi"><span class="kpi-label">PLAYED</span><div class="kpi-value" id="kpiResults">—</div><div class="kpi-note">Recorded results</div></article><article class="kpi"><span class="kpi-label">THIS WEEK</span><div class="kpi-value" id="kpiDues">—</div><div class="kpi-note">Dues paid</div></article></div>
+<div class="split"><section class="card"><div class="card-head"><div><small>NEXT MATCH</small><h3>Upcoming fixture</h3></div><a href="fixtures.html" class="btn">Manage</a></div><div class="card-body" id="nextMatch"><div class="skeleton"></div></div></section><section class="card"><div class="card-head"><div><small>LATEST RESULT</small><h3>Last match</h3></div><a href="results.html" class="btn">Manage</a></div><div class="card-body" id="latestResult"><div class="skeleton"></div></div></section></div>
+<section class="card" style="margin-top:14px"><div class="card-head"><div><small>SHORTCUTS</small><h3>Quick actions</h3></div></div><div class="card-body grid"><a class="dashboard-item" href="dues.html"><div><strong>Team dues</strong><span>Mark weekly payments</span></div><b>₦</b></a><a class="dashboard-item" href="fixtures.html"><div><strong>Schedule fixture</strong><span>Add the next match</span></div><b>→</b></a><a class="dashboard-item" href="news.html"><div><strong>Publish news</strong><span>Keep supporters updated</span></div><b>◈</b></a><a class="dashboard-item" href="gallery.html"><div><strong>Update gallery</strong><span>Add club memories</span></div><b>▧</b></a></div></section>
+<section class="card" style="margin-top:14px"><div class="card-head"><div><small>RECENT CLUB ACTIVITY</small><h3>Latest updates</h3></div></div><div class="list-stack" id="recentActivity"><div class="empty">Loading…</div></div></section>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script><script src="../js/supabase.js"></script><script src="../js/admin-guard.js"></script><script src="../js/admin-ui.js"></script>
+<script>
+(async()=>{
+  const $=id=>document.getElementById(id), esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  const toast=(m,err=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',err);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};
+  async function load(){
+    if(!SB){$('recentActivity').innerHTML='<div class="empty">Supabase is not configured.</div>';return}
+    const [players,fixtures,results,dues,news]=await Promise.all([SB.fetchAll('players',{filters:{status:'active'}}),SB.fetchAll('fixtures',{orderBy:'match_date'}),SB.fetchAll('results',{orderBy:'played_on',ascending:false}),SB.fetchAll('dues',{orderBy:'week_start',ascending:false,limit:1500}),SB.fetchAll('news',{orderBy:'published_at',ascending:false,limit:6})]);
+    if(players.error||fixtures.error||results.error||dues.error||news.error){toast('Some dashboard data could not load.',true)}
+    $('kpiPlayers').textContent=players.data?.length||0;$('kpiFixtures').textContent=(fixtures.data||[]).filter(f=>f.status==='upcoming'&&new Date(f.match_date)>=new Date()).length;$('kpiResults').textContent=results.data?.length||0;
+    const monday=new Date();monday.setHours(0,0,0,0);const day=(monday.getDay()+6)%7;monday.setDate(monday.getDate()-day);const week=monday.toISOString().slice(0,10);$('kpiDues').textContent=(dues.data||[]).filter(d=>d.week_start===week&&d.paid).length;
+    const next=(fixtures.data||[]).find(f=>f.status==='upcoming'&&new Date(f.match_date)>=new Date()); const latest=(results.data||[])[0];
+    $('nextMatch').innerHTML=next?`<div class="dashboard-item"><div><strong>Elite Ballers FC vs ${esc(next.opponent)}</strong><span>${new Date(next.match_date).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})} · ${esc(next.venue||'Venue TBA')}</span></div><span class="badge">${esc(next.status)}</span></div>`:'<div class="empty">No upcoming fixture.</div>';
+    $('latestResult').innerHTML=latest?`<div class="dashboard-item"><div><strong>Elite Ballers FC ${latest.our_goals} – ${latest.opponent_goals} ${esc(latest.opponent)}</strong><span>${new Date(latest.played_on).toLocaleDateString([], {dateStyle:'medium'})} · ${esc(latest.venue||'Venue TBA')}</span></div></div>`:'<div class="empty">No results recorded.</div>';
+    $('recentActivity').innerHTML=(news.data||[]).map(n=>`<a class="dashboard-item" href="news.html"><div><strong>${esc(n.title)}</strong><span>${new Date(n.published_at).toLocaleDateString([], {dateStyle:'medium'})}</span></div><b>→</b></a>`).join('')||'<div class="empty">No recent news yet.</div>';
+  }
+  $('refreshDashboard').onclick=()=>load();load();
+})();
+</script>
+</body></html>

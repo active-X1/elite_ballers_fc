@@ -1,0 +1,57 @@
+/* Elite Ballers FC — responsive app UI */
+:root {
+  --eb-accent:#d4ff00; --eb-accent-2:#8fe600; --eb-surface:rgba(15,21,27,.92); --eb-bg:#05070a;
+  --eb-text:#edf3f7; --eb-muted:#98a7b3; --eb-line:rgba(255,255,255,.09); --eb-shadow:0 18px 50px rgba(0,0,0,.22);
+}
+html.eb-light {
+  --eb-bg:#f5f7f9; --eb-surface:rgba(255,255,255,.94); --eb-text:#14202b; --eb-muted:#64717d; --eb-line:rgba(17,28,38,.11); --eb-shadow:0 14px 36px rgba(20,32,43,.10);
+}
+body.eb-app { background:var(--eb-bg); color:var(--eb-text); padding-top:72px; padding-bottom:92px; transition:background .25s ease,color .25s ease; }
+.eb-topbar{position:fixed;inset:0 0 auto 0;height:64px;z-index:5000;display:flex;align-items:center;justify-content:space-between;padding:0 max(14px,env(safe-area-inset-right)) 0 max(14px,env(safe-area-inset-left));background:rgba(8,12,16,.92);background:color-mix(in srgb,var(--eb-surface) 88%,transparent);border-bottom:1px solid var(--eb-line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.eb-brand{display:flex;align-items:center;gap:9px;font-weight:900;min-width:0}.eb-brand-badge{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;overflow:hidden;background:var(--eb-accent);color:#101410;box-shadow:0 0 22px rgba(212,255,0,.22);flex:none}.eb-brand-badge img{width:100%;height:100%;object-fit:cover}.eb-brand-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(.83rem,3.5vw,1rem)}
+.eb-top-actions{display:flex;align-items:center;gap:7px}.eb-icon-btn,.eb-install-btn{min-width:40px;height:40px;border:1px solid var(--eb-line);border-radius:12px;background:rgba(127,127,127,.08);color:inherit;display:grid;place-items:center;cursor:pointer;font-weight:800}.eb-install-btn{padding:0 11px;width:auto}
+.eb-bottom-nav{position:fixed;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));z-index:4900;height:66px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:5px;background:rgba(8,12,16,.94);background:color-mix(in srgb,var(--eb-surface) 94%,transparent);border:1px solid var(--eb-line);border-radius:20px;box-shadow:var(--eb-shadow);backdrop-filter:blur(18px)}
+.eb-nav-btn{border:0;background:transparent;color:var(--eb-muted);border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.68rem;font-weight:800;cursor:pointer;min-width:0}.eb-nav-icon{font-size:1.1rem;line-height:1}.eb-nav-btn.active{color:#111;background:var(--eb-accent);box-shadow:0 5px 18px rgba(212,255,0,.2)}
+.eb-more-sheet{position:fixed;left:10px;right:10px;bottom:84px;z-index:4950;background:var(--eb-surface);border:1px solid var(--eb-line);border-radius:22px;padding:15px;box-shadow:0 30px 80px rgba(0,0,0,.35);backdrop-filter:blur(18px);transform:translateY(16px);opacity:0;pointer-events:none;transition:.2s ease;max-height:min(76vh,560px);overflow:auto}.eb-more-sheet.open{transform:none;opacity:1;pointer-events:auto}.eb-more-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.eb-more-head strong{display:block;font-size:1.15rem}.eb-eyebrow{font-size:.64rem;letter-spacing:.15em;color:var(--eb-muted);font-weight:900;display:block;margin-bottom:3px}.eb-close-more{width:38px;height:38px;border:1px solid var(--eb-line);border-radius:11px;background:rgba(127,127,127,.08);color:inherit;font-size:1.3rem;cursor:pointer}.eb-more-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.eb-more-item{min-height:60px;border:1px solid var(--eb-line);border-radius:15px;background:rgba(127,127,127,.05);display:flex;align-items:center;gap:10px;padding:10px 12px;font-weight:800}.eb-more-item span{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:rgba(212,255,0,.13)}
+.eb-theme-box{margin-top:12px;padding:13px;border:1px solid var(--eb-line);border-radius:16px;background:rgba(127,127,127,.05);display:grid;gap:10px}.eb-theme-box strong{display:block}.eb-theme-box small{display:block;color:var(--eb-muted);margin-top:2px}.eb-theme-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.eb-theme-options button{padding:10px 7px;border:1px solid var(--eb-line);background:transparent;color:inherit;border-radius:11px;font-weight:800;cursor:pointer}.eb-theme-options button.active{border-color:var(--eb-accent);background:rgba(212,255,0,.12);color:inherit}
+.eb-app img{max-width:100%;height:auto}.eb-app .player-card,.eb-app .fixture-card,.eb-app .result-card,.eb-app .news-card,.eb-app .gallery-item,.eb-app .match-card{max-width:100%;overflow:hidden}.eb-app .player-image{height:clamp(160px,50vw,330px)}.eb-app .player-image img{width:100%;height:100%;object-fit:cover}.eb-app .news-card-image{height:clamp(120px,38vw,220px)}.eb-app .news-card-image img,.eb-app .gallery-item img{width:100%;height:100%;object-fit:cover}.eb-app .gallery-item{height:clamp(130px,42vw,280px)}.eb-app .gallery-grid,.eb-app .news-grid,.eb-app .players-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:clamp(10px,2.5vw,18px)}
+@media(min-width:900px){body.eb-app{padding-top:76px;padding-bottom:30px}.eb-bottom-nav{left:auto;right:22px;bottom:18px;width:420px}.eb-more-sheet{left:auto;right:22px;width:min(450px,calc(100vw - 44px));bottom:94px}.eb-app .news-card img,.eb-app .gallery-item img{height:220px}}
+@media(max-width:420px){body.eb-app{padding-top:68px}.eb-topbar{height:58px}.eb-brand-badge{width:30px;height:30px}.eb-nav-btn{font-size:.61rem}.eb-nav-icon{font-size:1rem}.eb-bottom-nav{height:62px;left:7px;right:7px}.eb-more-sheet{left:7px;right:7px;bottom:76px}.eb-more-grid{grid-template-columns:1fr 1fr}.eb-app .player-card img{width:88px;height:88px}.eb-app .news-card img,.eb-app .gallery-item img{height:115px}}
+@media(prefers-reduced-motion:reduce){.eb-more-sheet,*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Hide the legacy navigation once the responsive app shell is active. */
+body.eb-app > .navbar,
+body.eb-app > .site-header { display:none !important; }
+
+/* Friendly light-mode surfaces for the legacy page content. */
+html.eb-light body.eb-app .feature-card,
+html.eb-light body.eb-app .match-card,
+html.eb-light body.eb-app .result-card,
+html.eb-light body.eb-app .news-card,
+html.eb-light body.eb-app .player-card,
+html.eb-light body.eb-app .gallery-item,
+html.eb-light body.eb-app .info-card,
+html.eb-light body.eb-app .stat-card,
+html.eb-light body.eb-app .about-card,
+html.eb-light body.eb-app .contact-card,
+html.eb-light body.eb-app .card {
+  background:#fff !important; color:#17222c !important; border-color:rgba(18,32,44,.11) !important; box-shadow:0 12px 34px rgba(25,40,52,.08) !important;
+}
+html.eb-light body.eb-app .feature-card p,
+html.eb-light body.eb-app .match-card p,
+html.eb-light body.eb-app .result-card p,
+html.eb-light body.eb-app .news-card p,
+html.eb-light body.eb-app .player-card p,
+html.eb-light body.eb-app .gallery-item figcaption { color:#63717c !important; }
+
+.eb-loading,.eb-empty,.eb-empty-card{padding:24px;text-align:center;color:var(--eb-muted)}
+.eb-empty-card{display:grid;gap:8px;place-items:center;min-height:220px}
+.eb-empty-card strong{font-size:clamp(1rem,4vw,1.35rem);color:var(--eb-text)}
+.eb-empty-card p{max-width:420px;margin:0;color:var(--eb-muted)}
+.player-placeholder{height:100%;display:grid;place-items:center;background:rgba(127,127,127,.08);font-size:2rem;color:var(--eb-muted)}
+#ebLightbox{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.88);backdrop-filter:blur(12px)}
+#ebLightbox.open{display:flex}
+#ebLightbox img{max-width:min(94vw,1100px);max-height:78vh;width:auto;height:auto;border-radius:16px;box-shadow:0 25px 80px rgba(0,0,0,.5)}
+#ebLightbox button{position:absolute;top:18px;right:18px;width:44px;height:44px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(0,0,0,.35);color:#fff;font-size:1.6rem}
+#ebLightbox div{position:absolute;left:20px;right:20px;bottom:20px;text-align:center;color:#fff;font-size:.82rem}
+body.eb-lightbox-open{overflow:hidden}

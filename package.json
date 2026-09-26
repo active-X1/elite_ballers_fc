@@ -1,0 +1,10 @@
+{
+  "name": "elite-ballers-fc",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-config.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

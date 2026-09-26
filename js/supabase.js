@@ -1,63 +1,109 @@
-// Supabase helper (client-side, attaches helpers to window.SB)
-// IMPORTANT: add your Supabase values via environment injection when deploying.
+/* Elite Ballers FC — Supabase browser client */
 (function () {
-  const SUPABASE_URL = window.SUPABASE_URL || 'YOUR_SUPABASE_URL';
-  const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'YOUR_SUPABASE_ANON_KEY';
+  const cfg = window.EB_SUPABASE_CONFIG || {};
+  const url = String(cfg.url || '').trim();
+  const key = String(cfg.publishableKey || cfg.anonKey || '').trim();
 
+  if (!url || !key) {
+    console.warn('[Elite Ballers] Supabase is not configured.');
+    window.SB = null;
+    return;
+  }
   if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-    console.warn('Supabase library not loaded. Include the supabase CDN before js/supabase.js');
+    console.error('[Elite Ballers] Supabase JS library was not loaded.');
+    window.SB = null;
     return;
   }
 
-  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const client = window.supabase.createClient(url, key, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  });
 
-  async function signIn(email, password) {
-    const { user, session, error } = await client.auth.signIn({ email, password });
-    return { user, session, error };
-  }
-
-  async function signOut() {
-    await client.auth.signOut();
-  }
-
-  function getUser() {
-    return client.auth.user();
-  }
-
-  async function insert(table, payload) {
-    const { data, error } = await client.from(table).insert([payload]);
-    return { data, error };
-  }
-
-  async function fetchAll(table) {
-    const { data, error } = await client.from(table).select('*').order('id', { ascending: false });
-    return { data, error };
-  }
-
-  window.SB = { client, signIn, signOut, getUser, insert, fetchAll };
-
-})();
-(function () {
-  const url = window.SUPABASE_URL || '';
-  const anonKey = window.SUPABASE_ANON_KEY || '';
-
-  if (!window.supabase && typeof supabase !== 'undefined') {
-    window.supabase = supabase.createClient(url, anonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      }
-    });
-  }
-
-  window.__ELITE_SUPABASE__ = {
-    ready: !!(window.supabase && url && anonKey && !url.includes('your-project')),
-    url,
-    anonKey
+  const getUser = async () => {
+    const { data, error } = await client.auth.getUser();
+    return error ? null : (data?.user || null);
   };
 
-  if (!window.__ELITE_SUPABASE__.ready) {
-    console.warn('Supabase is not configured yet. Set SUPABASE_URL and SUPABASE_ANON_KEY before deployment.');
+  const getSession = async () => {
+    const { data, error } = await client.auth.getSession();
+    return error ? null : (data?.session || null);
+  };
+
+  const isAdmin = async () => {
+    const user = await getUser();
+    if (!user) return false;
+    const { data, error } = await client
+      .from('profiles')
+      .select('id,role,full_name')
+      .eq('id', user.id)
+      .maybeSingle();
+    return !error && data?.role === 'admin';
+  };
+
+  const requireAdmin = async (redirect = 'login.html') => {
+    const ok = await isAdmin();
+    if (!ok) {
+      const next = encodeURIComponent(location.pathname + location.search + location.hash);
+      location.href = `${redirect}?next=${next}`;
+      return false;
+    }
+    return true;
+  };
+
+  const signIn = (email, password) => client.auth.signInWithPassword({ email, password });
+  const signOut = () => client.auth.signOut();
+  const updatePassword = password => client.auth.updateUser({ password });
+  const resetPassword = email => client.auth.resetPasswordForEmail(email, {
+    redirectTo: `${location.origin}${location.pathname.replace(/\/admin\/login\.html$/, '')}/admin/login.html`
+  });
+
+  async function fetchAll(table, options = {}) {
+    let query = client.from(table).select(options.select || '*');
+
+    if (options.filters) {
+      for (const [column, value] of Object.entries(options.filters)) {
+        if (Array.isArray(value)) query = query.in(column, value);
+        else if (value === null) query = query.is(column, null);
+        else query = query.eq(column, value);
+      }
+    }
+    if (options.gte) query = query.gte(options.gte.column, options.gte.value);
+    if (options.lte) query = query.lte(options.lte.column, options.lte.value);
+    if (options.orderBy) {
+      query = query.order(options.orderBy, {
+        ascending: options.ascending !== false,
+        nullsFirst: false
+      });
+    }
+    if (Number.isInteger(options.limit)) query = query.limit(options.limit);
+    return query;
   }
+
+  const insert = (table, row) => client.from(table).insert(row).select().single();
+  const update = (table, id, row) => client.from(table).update(row).eq('id', id).select().single();
+  const upsert = (table, row, onConflict) => client.from(table).upsert(
+    row,
+    onConflict ? { onConflict } : undefined
+  ).select().single();
+  const remove = (table, id) => client.from(table).delete().eq('id', id);
+  const upload = (bucket, path, file, options = {}) => client.storage.from(bucket).upload(path, file, {
+    upsert: Boolean(options.upsert),
+    contentType: options.contentType || file?.type || undefined,
+    cacheControl: options.cacheControl || '3600'
+  });
+  const removeStorage = (bucket, paths) => client.storage.from(bucket).remove(
+    Array.isArray(paths) ? paths : [paths]
+  );
+  const publicUrl = (bucket, path) => client.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+
+  window.SB = {
+    client, getUser, getSession, isAdmin, requireAdmin,
+    signIn, signOut, updatePassword, resetPassword,
+    fetchAll, insert, update, upsert, remove,
+    upload, removeStorage, publicUrl
+  };
 })();

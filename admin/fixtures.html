@@ -1,112 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Fixtures | Elite Ballers FC</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fixtures | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar" id="adminSidebar">
-      <div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div>
-      <nav class="admin-nav">
-        <span class="admin-nav-title">MAIN MENU</span>
-        <a href="dashboard.html" class="admin-nav-link">▣ Dashboard</a>
-        <a href="players.html" class="admin-nav-link">♟ Players</a>
-        <a href="fixtures.html" class="admin-nav-link active">📅 Fixtures</a>
-      </nav>
-      <div class="admin-sidebar-bottom"><a href="../index.html" class="view-site-link">↗ View Website</a><button class="admin-logout" id="logoutButton">⇥ Logout</button></div>
-    </aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><button class="admin-menu-button" id="adminMenuButton">☰</button><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Fixtures</h1></div><div class="admin-user"><div class="admin-user-avatar">A</div></div></header>
-      <div class="admin-top-icons" role="navigation" aria-label="Quick admin sections">
-        <a href="dashboard.html"><span class="icon">▣</span>Dashboard</a>
-        <a href="players.html"><span class="icon">♟</span>Players</a>
-        <a href="fixtures.html" class="active"><span class="icon">📅</span>Fixtures</a>
-        <a href="results.html"><span class="icon">🏆</span>Results</a>
-        <a href="gallery.html"><span class="icon">▧</span>Gallery</a>
-        <a href="news.html"><span class="icon">◈</span>News</a>
-        <a href="dues.html"><span class="icon">₦</span>Dues</a>
-        <a href="settings.html"><span class="icon">⚙</span>Settings</a>
-      </div>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">FIXTURES</span><h3>Manage Fixtures</h3></div><a href="#" id="refreshFixtures">Refresh</a></div>
-          <form id="fixtureForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-            <input id="fixtureDate" placeholder="Date (YYYY-MM-DD)" required>
-            <input id="fixtureTime" placeholder="Time (e.g. 16:00)" required>
-            <input id="fixtureOpponent" placeholder="Opponent" required>
-            <input id="fixtureLocation" placeholder="Location">
-            <button class="btn btn-primary" type="submit">Add Fixture</button>
-          </form>
-          <div id="fixturesList" style="margin-top:18px"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/js/supabase.js"></script>
-  <script src="/js/admin.js"></script>
-  <script type="module">
-    import AdminCRUD from '/js/admin-crud.js';
-    const fixturesList = document.getElementById('fixturesList');
-    const fixtureForm = document.getElementById('fixtureForm');
-
-    async function renderFixtures(items) {
-      fixturesList.innerHTML = items.map(f => `<div style="padding:10px;border-bottom:1px solid var(--border)"><strong>${f.date} ${f.time}</strong> — ${f.opponent} <span style="color:var(--text-muted)">@ ${f.location || 'TBD'}</span> <button data-id="${f.id}" data-action="delete">Delete</button></div>`).join('');
-      fixturesList.querySelectorAll('button[data-action]').forEach(b => b.addEventListener('click', async () => { if (!confirm('Delete fixture?')) return; await AdminCRUD.deleteItem('fixtures', b.dataset.id); loadFixtures(); }));
-    }
-
-    async function loadFixtures() { await AdminCRUD.loadList('fixtures', renderFixtures); }
-
-    fixtureForm.addEventListener('submit', async (e) => { e.preventDefault(); const date=document.getElementById('fixtureDate').value.trim(); const time=document.getElementById('fixtureTime').value.trim(); const opponent=document.getElementById('fixtureOpponent').value.trim(); const location=document.getElementById('fixtureLocation').value.trim(); await AdminCRUD.addItem('fixtures', { date, time, opponent, location }); fixtureForm.reset(); loadFixtures(); });
-
-    document.getElementById('refreshFixtures').addEventListener('click', (e)=>{e.preventDefault();loadFixtures();});
-    loadFixtures();
-  </script>
-</body>
-</html>
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Fixtures | Admin</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
-  <script src="../js/supabase.js"></script>
-</head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar"></aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><h1>Fixtures</h1></header>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">FIXTURES</span><h3>Manage Fixtures</h3></div></div>
-          <div id="fixturesList">Loading...</div>
-          <form id="fixtureForm" style="margin-top:16px;">
-            <input name="home" placeholder="Home team" required>
-            <input name="away" placeholder="Away team" required>
-            <input name="date" placeholder="YYYY-MM-DD" required>
-            <input name="time" placeholder="Time">
-            <button class="btn btn-primary">Add Fixture</button>
-          </form>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="../js/admin.js"></script>
-  <script>
-    (async ()=>{
-      const list=document.getElementById('fixturesList');
-      const render=(rows)=>{ list.innerHTML=''; if(!rows.length) { list.textContent='No fixtures'; return } rows.forEach(f=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-content"><h4>${f.home} vs ${f.away}</h4><p>${f.date} ${f.time||''}</p></div>`; list.appendChild(el) }) }
-      if(window.SB){ const r=await window.SB.fetchAll('fixtures'); render(r.data||[]) }
-      document.getElementById('fixtureForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ home: fd.get('home'), away: fd.get('away'), date: fd.get('date'), time: fd.get('time') }; if(window.SB){ await window.SB.insert('fixtures', payload); const r=await window.SB.fetchAll('fixtures'); render(r.data||[]); e.target.reset(); } })
-    })();
-  </script>
-</body>
-</html>
-
+<body data-page="fixtures.html" data-title="Fixtures" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head"><div><span class="eyebrow">MATCH CENTRE</span><h2>Fixtures</h2><p>Keep upcoming matches accurate and easy to read.</p></div><div class="page-actions"><button class="btn" id="refreshFixtures">↻ Refresh</button><button class="btn primary" id="addFixture">＋ Add Fixture</button></div></section>
+<section class="card"><div class="toolbar"><input class="grow" id="fixtureSearch" placeholder="Search opponent or venue…"><select id="fixtureStatus" style="max-width:180px"><option value="upcoming" selected>Upcoming</option><option value="all">All statuses</option><option value="postponed">Postponed</option><option value="cancelled">Cancelled</option><option value="completed">Completed</option></select></div><div class="list-stack" id="fixturesList"><div class="empty">Loading…</div></div></section>
+<div class="modal" id="fixtureModal"><div class="modal-card"><div class="modal-head"><div><span class="eyebrow">MATCH DETAILS</span><h3 id="fixtureModalTitle">Add Fixture</h3></div><button class="modal-close" type="button" data-close>×</button></div><form id="fixtureForm" class="form-grid"><input type="hidden" id="fixtureId"><div class="field full"><label for="fixtureTitle">Match title</label><input id="fixtureTitle" maxlength="100" placeholder="League match / Friendly / Training game"></div><div class="field full"><label for="fixtureOpponent">Opponent</label><input id="fixtureOpponent" required maxlength="80" placeholder="Opponent name"></div><div class="field"><label for="fixtureDate">Date</label><input id="fixtureDate" type="date" required></div><div class="field"><label for="fixtureTime">Time</label><input id="fixtureTime" type="time"></div><div class="field"><label for="fixtureVenue">Venue</label><input id="fixtureVenue" maxlength="120" placeholder="Venue / pitch"></div><div class="field"><label for="fixtureStatusValue">Status</label><select id="fixtureStatusValue"><option value="upcoming">Upcoming</option><option value="postponed">Postponed</option><option value="cancelled">Cancelled</option><option value="completed">Completed</option></select></div><div class="field full"><label for="fixtureNotes">Notes</label><textarea id="fixtureNotes" rows="3" maxlength="400" placeholder="Optional match notes"></textarea></div><div class="form-actions full"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" id="saveFixture" type="submit">Save fixture</button></div></form></div></div>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script><script src="../js/supabase.js"></script><script src="../js/admin-guard.js"></script><script src="../js/admin-ui.js"></script>
+<script>
+(async()=>{const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));let rows=[];const toast=(m,e=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',e);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};function render(){const q=$('fixtureSearch').value.toLowerCase(),s=$('fixtureStatus').value;const list=rows.filter(f=>(s==='all'||f.status===s)&&(`${f.opponent} ${f.venue||''} ${f.title||''}`.toLowerCase().includes(q))).sort((a,b)=>new Date(a.match_date)-new Date(b.match_date));$('fixturesList').innerHTML=list.map(f=>`<article class="list-row"><div><h4>${esc(f.title||`Elite Ballers FC vs ${f.opponent}`)}</h4><p>${new Date(f.match_date).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})} · ${esc(f.venue||'Venue TBA')}</p></div><div class="row-actions"><span class="badge ${f.status!=='upcoming'?'muted':''}">${esc(f.status)}</span><button class="mini-btn" data-edit="${f.id}">✎</button><button class="mini-btn danger" data-delete="${f.id}">🗑</button></div></article>`).join('')||'<div class="empty">No fixtures found.</div>'}async function load(){if(!SB){$('fixturesList').innerHTML='<div class="empty">Supabase is not configured.</div>';return}const r=await SB.fetchAll('fixtures',{orderBy:'match_date'});if(r.error)return toast(r.error.message,true);rows=r.data||[];render()}function close(){$('fixtureModal').classList.remove('open')}function open(f){$('fixtureForm').reset();$('fixtureId').value=f?.id||'';$('fixtureModalTitle').textContent=f?'Edit Fixture':'Add Fixture';$('fixtureTitle').value=f?.title||'';$('fixtureOpponent').value=f?.opponent||'';if(f?.match_date){const d=new Date(f.match_date);$('fixtureDate').value=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;$('fixtureTime').value=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}$('fixtureVenue').value=f?.venue||'';$('fixtureStatusValue').value=f?.status||'upcoming';$('fixtureNotes').value=f?.notes||'';$('fixtureModal').classList.add('open')}$('addFixture').onclick=()=>open();$('refreshFixtures').onclick=load;$('fixtureSearch').oninput=render;$('fixtureStatus').onchange=render;document.querySelectorAll('[data-close]').forEach(b=>b.onclick=close);$('fixtureModal').onclick=e=>{if(e.target.id==='fixtureModal')close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',async e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');if(ed)open(rows.find(x=>x.id===ed.dataset.edit));if(del){const f=rows.find(x=>x.id===del.dataset.delete);if(f&&!confirm(`Delete fixture against ${f.opponent}?`))return;const r=await SB.remove('fixtures',del.dataset.delete);if(r.error)toast(r.error.message,true);else{toast('Fixture deleted');load()}}});$('fixtureForm').onsubmit=async e=>{e.preventDefault();const id=$('fixtureId').value,date=$('fixtureDate').value,time=$('fixtureTime').value||'12:00';const row={title:$('fixtureTitle').value.trim()||null,opponent:$('fixtureOpponent').value.trim(),venue:$('fixtureVenue').value.trim()||null,status:$('fixtureStatusValue').value,notes:$('fixtureNotes').value.trim()||null,match_date:new Date(`${date}T${time}:00`).toISOString()};$('saveFixture').disabled=true;const r=id?await SB.update('fixtures',id,row):await SB.insert('fixtures',row);$('saveFixture').disabled=false;if(r.error)toast(r.error.message,true);else{close();toast(id?'Fixture updated ✓':'Fixture added ✓');load()}};load()})();
+</script>
+</body></html>

@@ -1,84 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — Gallery | Elite Ballers FC</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Gallery | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>Gallery</h1></div></header>
-      <div class="admin-top-icons" role="navigation" aria-label="Quick admin sections">
-        <a href="dashboard.html"><span class="icon">▣</span>Dashboard</a>
-        <a href="players.html"><span class="icon">♟</span>Players</a>
-        <a href="fixtures.html"><span class="icon">📅</span>Fixtures</a>
-        <a href="results.html"><span class="icon">🏆</span>Results</a>
-        <a href="gallery.html" class="active"><span class="icon">▧</span>Gallery</a>
-        <a href="news.html"><span class="icon">◈</span>News</a>
-        <a href="dues.html"><span class="icon">₦</span>Dues</a>
-        <a href="settings.html"><span class="icon">⚙</span>Settings</a>
-      </div>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">GALLERY</span><h3>Manage Gallery</h3></div></div>
-          <form id="galleryForm" style="display:flex;gap:8px;align-items:center;">
-            <input id="galleryTitle" placeholder="Title" required>
-            <input id="galleryImage" placeholder="Image URL" required>
-            <button class="btn btn-primary" type="submit">Add Image</button>
-          </form>
-          <div id="galleryList" style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/js/supabase.js"></script>
-  <script src="/js/admin.js"></script>
-  <script type="module">
-    import AdminCRUD from '/js/admin-crud.js';
-    const galleryList=document.getElementById('galleryList');
-    const galleryForm=document.getElementById('galleryForm');
-    async function renderGallery(items){ galleryList.innerHTML=items.map(i=>`<div style="background:#0b0b0b;border:1px solid var(--border);padding:8px;border-radius:10px"><img src="${i.image}" style="width:100%;height:120px;object-fit:cover;border-radius:6px"><div style="padding-top:8px"><strong>${i.title||''}</strong><div style="display:flex;justify-content:space-between;margin-top:8px"><small style="color:var(--text-muted)">${i.created_at||''}</small><button data-id="${i.id}" data-action="delete">Delete</button></div></div></div>`).join(''); galleryList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',async()=>{ if(!confirm('Delete image?'))return; await AdminCRUD.deleteItem('gallery', b.dataset.id); loadGallery(); })); }
-    async function loadGallery(){ await AdminCRUD.loadList('gallery', renderGallery); }
-    galleryForm.addEventListener('submit', async e=>{ e.preventDefault(); const title=document.getElementById('galleryTitle').value.trim(); const image=document.getElementById('galleryImage').value.trim(); await AdminCRUD.addItem('gallery', { title, image }); galleryForm.reset(); loadGallery(); });
-    loadGallery();
-  </script>
-</body>
-</html>
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Gallery | Admin</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
-  <script src="../js/supabase.js"></script>
-</head>
-<body class="admin-page">
-  <div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>Gallery</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">GALLERY</span><h3>Manage Images</h3></div></div>
-    <div id="galleryList">Loading...</div>
-    <form id="galleryForm" style="margin-top:16px;" enctype="multipart/form-data">
-      <input name="title" placeholder="Image title" required>
-      <input type="file" id="imageFile" accept="image/*" required>
-      <button class="btn btn-primary">Upload</button>
-    </form>
-    </div></section></main></div>
-  <script src="../js/admin.js"></script>
-  <script>
-    (async ()=>{
-      const gl=document.getElementById('galleryList'); const render=(rows)=>{ gl.innerHTML=''; if(!rows.length){gl.textContent='No images'; return} rows.forEach(i=>{ const el=document.createElement('div'); el.className='news-card'; el.innerHTML=`<div class="news-image" style="background-image:url(${i.url});background-size:cover"></div><div class="news-content"><h3>${i.title}</h3></div>`; gl.appendChild(el) }) }
-      if(window.SB){ const r=await window.SB.fetchAll('gallery'); render(r.data||[]) }
-      document.getElementById('galleryForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fileInput=document.getElementById('imageFile'); if(!fileInput.files.length) return; const file=fileInput.files[0]; // for now we store a placeholder URL, implementing signed uploads requires server keys
-        const payload={ title: e.target.title.value, url: URL.createObjectURL(file), created_at: new Date().toISOString() };
-        if(window.SB){ await window.SB.insert('gallery', payload); const r=await window.SB.fetchAll('gallery'); render(r.data||[]); e.target.reset(); }
-      })
-    })();
-  </script>
-</body>
-</html>
-
+<body data-page="gallery.html" data-title="Gallery" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head"><div><span class="eyebrow">MEDIA</span><h2>Gallery</h2><p>Upload match moments and club memories.</p></div><div class="page-actions"><button class="btn" id="refreshGallery">↻ Refresh</button><button class="btn primary" id="addGallery">＋ Add Photo</button></div></section>
+<section class="card"><div class="gallery-admin-grid" id="galleryList"><div class="empty">Loading…</div></div></section>
+<div class="modal" id="galleryModal"><div class="modal-card"><div class="modal-head"><div><span class="eyebrow">CLUB GALLERY</span><h3>New photo</h3></div><button class="modal-close" type="button" data-close>×</button></div><form id="galleryForm" class="form-grid"><div class="field full"><label for="galleryTitle">Title</label><input id="galleryTitle" maxlength="120" placeholder="Match day / training / team moment"></div><div class="field full"><label for="galleryFile">Photo file</label><input id="galleryFile" type="file" accept="image/*"></div><div class="field full"><label for="galleryUrl">Or photo URL</label><input id="galleryUrl" type="url" placeholder="https://…"><span class="helper">A file upload needs a public Supabase Storage bucket named gallery. A URL works without Storage.</span></div><div class="field full"><label for="galleryCaption">Caption</label><textarea id="galleryCaption" rows="3" maxlength="300" placeholder="Optional caption"></textarea></div><div class="form-actions full"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" id="saveGallery" type="submit">Add photo</button></div></form></div></div>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script><script src="../js/supabase.js"></script><script src="../js/admin-guard.js"></script><script src="../js/admin-ui.js"></script>
+<script>
+(async()=>{const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));let rows=[];const toast=(m,e=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',e);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)};function render(){$('galleryList').innerHTML=rows.map(g=>`<article class="gallery-admin-card"><img src="${esc(g.image_url)}" alt="${esc(g.title||'Elite Ballers FC')}" loading="lazy" onerror="this.style.opacity='.35'"><div class="gallery-admin-copy"><strong>${esc(g.title||'Untitled photo')}</strong><small>${esc(g.caption||'No caption')} · ${new Date(g.created_at).toLocaleDateString()}</small><button class="btn danger" data-delete="${g.id}">Delete</button></div></article>`).join('')||'<div class="empty">No gallery photos yet.</div>'}async function load(){if(!SB){$('galleryList').innerHTML='<div class="empty">Supabase is not configured.</div>';return}const r=await SB.fetchAll('gallery',{orderBy:'created_at',ascending:false});if(r.error)return toast(r.error.message,true);rows=r.data||[];render()}function close(){$('galleryModal').classList.remove('open');$('galleryForm').reset()}$('addGallery').onclick=()=>{$('galleryModal').classList.add('open')};$('refreshGallery').onclick=load;document.querySelectorAll('[data-close]').forEach(b=>b.onclick=close);$('galleryModal').onclick=e=>{if(e.target.id==='galleryModal')close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',async e=>{const del=e.target.closest('[data-delete]');if(!del||!del.closest('.gallery-admin-card'))return;if(!confirm('Delete this gallery photo?'))return;const item=rows.find(x=>x.id===del.dataset.delete);const r=await SB.remove('gallery',del.dataset.delete);if(r.error)toast(r.error.message,true);else{if(item?.storage_path)await SB.removeStorage?.('gallery',item.storage_path).catch(()=>{});toast('Photo deleted');load()}});$('galleryForm').onsubmit=async e=>{e.preventDefault();const file=$('galleryFile').files[0];let url=$('galleryUrl').value.trim();$('saveGallery').disabled=true;try{if(file){if(!SB)throw Error('Supabase is not configured');if(!file.type.startsWith('image/'))throw Error('Please choose an image file.');if(file.size>5*1024*1024)throw Error('Image must be 5 MB or smaller.');const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]+/g,'-');const path=`${Date.now()}-${crypto.randomUUID?.()||Math.random().toString(36).slice(2)}-${safe}`;const up=await SB.upload('gallery',path,file);if(up.error)throw up.error;url=SB.publicUrl('gallery',path)}if(!url)throw Error('Choose a photo file or provide a photo URL.');const r=await SB.insert('gallery',{title:$('galleryTitle').value.trim()||null,image_url:url,caption:$('galleryCaption').value.trim()||null,storage_path:file?url.split('/gallery/')[1]?.split('?')[0]:null});if(r.error)throw r.error;close();toast('Photo added ✓');load()}catch(err){toast(err.message||'Could not save photo.',true)}finally{$('saveGallery').disabled=false}};load()})();
+</script>
+</body></html>

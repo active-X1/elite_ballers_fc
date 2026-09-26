@@ -1,76 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin — News | Elite Ballers FC</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>News | Elite Ballers FC Admin</title>
+<link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin-ui.css">
+<script src="../js/theme.js"></script>
 </head>
-<body class="admin-page">
-  <div class="admin-layout">
-    <aside class="admin-sidebar" id="adminSidebar"><div class="admin-sidebar-header"><a href="../index.html" class="admin-sidebar-logo"><span>ELITE</span> BALLERS FC</a></div></aside>
-    <main class="admin-main">
-      <header class="admin-topbar"><div class="admin-topbar-title"><span>ADMIN PANEL</span><h1>News</h1></div></header>
-      <div class="admin-top-icons" role="navigation" aria-label="Quick admin sections">
-        <a href="dashboard.html"><span class="icon">▣</span>Dashboard</a>
-        <a href="players.html"><span class="icon">♟</span>Players</a>
-        <a href="fixtures.html"><span class="icon">📅</span>Fixtures</a>
-        <a href="results.html"><span class="icon">🏆</span>Results</a>
-        <a href="gallery.html"><span class="icon">▧</span>Gallery</a>
-        <a href="news.html" class="active"><span class="icon">◈</span>News</a>
-        <a href="dues.html"><span class="icon">₦</span>Dues</a>
-        <a href="settings.html"><span class="icon">⚙</span>Settings</a>
-      </div>
-      <section class="admin-content">
-        <div class="admin-panel">
-          <div class="admin-panel-header"><div><span class="admin-panel-label">NEWS</span><h3>Publish News</h3></div></div>
-          <form id="newsForm" style="display:flex;flex-direction:column;gap:8px;">
-            <input id="newsTitle" placeholder="Title" required>
-            <textarea id="newsBody" placeholder="Short body" rows="4"></textarea>
-            <input id="newsImage" placeholder="Image URL (optional)">
-            <button class="btn btn-primary" type="submit">Publish</button>
-          </form>
-          <div id="newsList" style="margin-top:18px"></div>
-        </div>
-      </section>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="/js/supabase.js"></script>
-  <script src="/js/admin.js"></script>
-  <script type="module">
-    import AdminCRUD from '/js/admin-crud.js';
-    const newsList=document.getElementById('newsList');
-    const newsForm=document.getElementById('newsForm');
-    async function renderNews(items){ newsList.innerHTML = items.map(n=>`<article style="padding:12px;border-bottom:1px solid var(--border)"><h4>${n.title}</h4><p style="color:var(--text-muted)">${n.body}</p><div style="display:flex;gap:8px"><small>${n.created_at||''}</small><button data-id="${n.id}" data-action="delete">Delete</button></div></article>`).join(''); newsList.querySelectorAll('button[data-action]').forEach(b=>b.addEventListener('click',async()=>{ if(!confirm('Delete news?'))return; await AdminCRUD.deleteItem('news', b.dataset.id); loadNews(); })); }
-    async function loadNews(){ await AdminCRUD.loadList('news', renderNews); }
-    newsForm.addEventListener('submit', async e=>{ e.preventDefault(); const title=document.getElementById('newsTitle').value.trim(); const body=document.getElementById('newsBody').value.trim(); const image=document.getElementById('newsImage').value.trim(); await AdminCRUD.addItem('news', { title, body, image }); newsForm.reset(); loadNews(); });
-    loadNews();
-  </script>
-</body>
-</html>
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>News | Admin</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/admin.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/supabase.min.js"></script>
-  <script src="../js/supabase.js"></script>
-</head>
-<body class="admin-page">
-  <div class="admin-layout"><aside class="admin-sidebar"></aside><main class="admin-main"><header class="admin-topbar"><h1>News</h1></header><section class="admin-content"><div class="admin-panel"><div class="admin-panel-header"><div><span class="admin-panel-label">NEWS</span><h3>Club News</h3></div></div><div id="newsList">Loading...</div>
-    <form id="newsForm" style="margin-top:16px;"><input name="title" placeholder="Headline" required><input name="excerpt" placeholder="Short excerpt"><textarea name="body" placeholder="Full article" rows="6"></textarea><button class="btn btn-primary">Publish</button></form></div></section></main></div>
-  <script src="../js/admin.js"></script>
-  <script>
-    (async ()=>{
-      const nl=document.getElementById('newsList'); const render=(rows)=>{ nl.innerHTML=''; if(!rows.length){ nl.textContent='No news items'; return } rows.forEach(n=>{ const el=document.createElement('article'); el.className='news-card'; el.innerHTML=`<div class="news-image"><span>NEWS</span></div><div class="news-content"><span class="news-date">${new Date(n.created_at).toLocaleDateString()}</span><h3>${n.title}</h3><p>${n.excerpt||''}</p></div>`; nl.appendChild(el) }) }
-      if(window.SB){ const r=await window.SB.fetchAll('news'); render(r.data||[]) }
-      document.getElementById('newsForm').addEventListener('submit', async (e)=>{ e.preventDefault(); const fd=new FormData(e.target); const payload={ title: fd.get('title'), excerpt: fd.get('excerpt'), body: fd.get('body'), created_at: new Date().toISOString() }; if(window.SB){ await window.SB.insert('news', payload); const r=await window.SB.fetchAll('news'); render(r.data||[]); e.target.reset(); } })
-    })();
-  </script>
-</body>
-</html>
-
+<body data-page="news.html" data-title="News" class="eb-admin-page">
+<div data-admin-page>
+<section class="page-head"><div><span class="eyebrow">CONTENT</span><h2>News</h2><p>Publish updates supporters can actually read.</p></div><div class="page-actions"><button class="btn" id="refreshNews">↻ Refresh</button><button class="btn primary" id="addNews">＋ New Story</button></div></section>
+<section class="card"><div class="toolbar"><input class="grow" id="newsSearch" placeholder="Search headlines…"><select id="newsFilter" style="max-width:170px"><option value="all">All stories</option><option value="published">Published</option><option value="draft">Drafts</option></select></div><div class="list-stack" id="newsList"><div class="empty">Loading…</div></div></section>
+<div class="modal" id="newsModal"><div class="modal-card"><div class="modal-head"><div><span class="eyebrow">STORY EDITOR</span><h3 id="newsModalTitle">New Story</h3></div><button class="modal-close" type="button" data-close>×</button></div><form id="newsForm" class="form-grid"><input type="hidden" id="newsId"><div class="field full"><label for="newsTitle">Headline</label><input id="newsTitle" required maxlength="150" placeholder="Write a strong headline"></div><div class="field"><label for="newsPublished">Status</label><select id="newsPublished"><option value="true">Published</option><option value="false">Draft</option></select></div><div class="field"><label for="newsImage">Cover image URL</label><input id="newsImage" type="url" placeholder="https://…"></div><div class="field full"><label for="newsContent">Story</label><textarea id="newsContent" rows="9" required maxlength="6000" placeholder="Write the full club update…"></textarea></div><div class="form-actions full"><button class="btn" type="button" data-close>Cancel</button><button class="btn primary" id="saveNews" type="submit">Save story</button></div></form></div></div>
+</div>
+<div class="toast" id="toast" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script><script src="../js/supabase.js"></script><script src="../js/admin-guard.js"></script><script src="../js/admin-ui.js"></script>
+<script>
+(async()=>{const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));let rows=[];const toast=(m,e=false)=>{const t=$('toast');t.textContent=m;t.classList.toggle('error',e);t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};function render(){const q=$('newsSearch').value.toLowerCase(),f=$('newsFilter').value;const list=rows.filter(n=>(f==='all'||(f==='published'?n.published:!n.published))&&`${n.title} ${n.content}`.toLowerCase().includes(q));$('newsList').innerHTML=list.map(n=>`<article class="list-row"><div><h4>${esc(n.title)}</h4><p>${esc((n.content||'').slice(0,150))}${n.content?.length>150?'…':''} · ${new Date(n.published_at||n.created_at).toLocaleDateString()}</p></div><div class="row-actions"><span class="badge ${n.published?'':'muted'}">${n.published?'Published':'Draft'}</span><button class="mini-btn" data-edit="${n.id}">✎</button><button class="mini-btn danger" data-delete="${n.id}">🗑</button></div></article>`).join('')||'<div class="empty">No stories found.</div>'}async function load(){if(!SB){$('newsList').innerHTML='<div class="empty">Supabase is not configured.</div>';return}const r=await SB.fetchAll('news',{orderBy:'published_at',ascending:false});if(r.error)return toast(r.error.message,true);rows=r.data||[];render()}function close(){$('newsModal').classList.remove('open')}function open(n){$('newsForm').reset();$('newsId').value=n?.id||'';$('newsModalTitle').textContent=n?'Edit Story':'New Story';$('newsTitle').value=n?.title||'';$('newsPublished').value=String(n?.published??true);$('newsImage').value=n?.image_url||'';$('newsContent').value=n?.content||'';$('newsModal').classList.add('open')}$('addNews').onclick=()=>open();$('refreshNews').onclick=load;$('newsSearch').oninput=render;$('newsFilter').onchange=render;document.querySelectorAll('[data-close]').forEach(b=>b.onclick=close);$('newsModal').onclick=e=>{if(e.target.id==='newsModal')close()};document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});document.addEventListener('click',async e=>{const ed=e.target.closest('[data-edit]'),del=e.target.closest('[data-delete]');if(ed)open(rows.find(x=>x.id===ed.dataset.edit));if(del){if(!confirm('Delete this story?'))return;const r=await SB.remove('news',del.dataset.delete);if(r.error)toast(r.error.message,true);else{toast('Story deleted');load()}}});$('newsForm').onsubmit=async e=>{e.preventDefault();const id=$('newsId').value,existing=rows.find(x=>x.id===id),published=$('newsPublished').value==='true',row={title:$('newsTitle').value.trim(),content:$('newsContent').value.trim(),image_url:$('newsImage').value.trim()||null,published,published_at:existing?.published_at||new Date().toISOString()};$('saveNews').disabled=true;const r=id?await SB.update('news',id,row):await SB.insert('news',row);$('saveNews').disabled=false;if(r.error)toast(r.error.message,true);else{close();toast(id?'Story updated ✓':'Story saved ✓');load()}};load()})();
+</script>
+</body></html>
