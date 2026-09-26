@@ -83,6 +83,11 @@
     $('savePassword').disabled=true;try{const r=await SB.updatePassword(a);if(r.error)throw r.error;$('passwordForm').reset();toast('Password updated ✓')}catch(err){toast(err.message||'Could not update password.',true)}finally{$('savePassword').disabled=false}
   };
   $('logoutSettings').onclick=async()=>{await SB?.signOut();location.href='login.html'};
+  if(new URLSearchParams(location.search).get('setPassword')==='1'){
+    toast('Reset link confirmed — set a new password below.');
+    $('newPassword').scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>$('newPassword').focus(),300);
+  }
   load();
 })();
 </script>

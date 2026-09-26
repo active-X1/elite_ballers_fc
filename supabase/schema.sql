@@ -257,10 +257,11 @@ using (public.is_admin())
 with check (public.is_admin());
 
 -- ---------- Storage ----------
--- Create these buckets in Supabase Storage (or via the dashboard):
--- gallery, players, news
--- Keep them public for simple static-site image URLs, while restricting uploads
--- through storage policies to admins.
+-- This site only ever uploads files to a single bucket: 'gallery'.
+-- (Player photos and news cover images are entered as a plain URL in the
+-- admin UI, so no storage bucket is needed for those.)
+-- Keep the bucket public for simple static-site image URLs, while restricting
+-- uploads/updates/deletes through storage policies to admins (below).
 
 insert into public.club_settings (key, value)
 values
